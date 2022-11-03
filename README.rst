@@ -1,4 +1,4 @@
-idmefv2-definition
+idmefv2-specification
 ##################
 
 IDMEFv2 JSON definition and examples.
