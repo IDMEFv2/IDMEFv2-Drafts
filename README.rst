@@ -17,5 +17,5 @@ project.
 
 Official link for the Internet Drafts at IETF : 
 
-* https://www.ietf.org/archive/id/draft-lehmann-idmefv2-00.txt
-* https://www.ietf.org/archive/id/draft-poirotte-idmefv2-https-transport-00.txt
+* https://www.ietf.org/archive/id/draft-lehmann-idmefv2-01.txt
+* https://www.ietf.org/archive/id/draft-poirotte-idmefv2-https-transport-01.txt
