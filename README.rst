@@ -11,11 +11,9 @@ This repository provides:
 * A JSON schema for the IDMEFv2 JSON format
 
 These definitions and examples is currently in an experimental status and is
-regularly kept in sync with the development status of the IDMEFv2 format, as
-part of the `SECEF <https://www.secef.net/>`_ (SECurity Exchange Format)
-project.
+regularly kept in sync with the development status of the IDMEFv2 format.
 
 Official link for the Internet Drafts at IETF : 
 
-* https://www.ietf.org/archive/id/draft-lehmann-idmefv2-01.txt
-* https://www.ietf.org/archive/id/draft-poirotte-idmefv2-https-transport-01.txt
+* https://datatracker.ietf.org/doc/draft-lehmann-idmefv2/
+* https://datatracker.ietf.org/doc/draft-lehmann-idmefv2-https-transport/

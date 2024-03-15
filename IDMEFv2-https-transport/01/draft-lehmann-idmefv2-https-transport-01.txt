@@ -2,33 +2,34 @@
 
 
 
-Network Working Group                                        F. Poirotte
-Internet-Draft                                               T. Andrejak
-Obsoletes: 4767 (if approved)                                   CS GROUP
-Intended status: Standards Track                              G. Lehmann
-Expires: 18 April 2023                                 Telecom Sud Paris
-                                                         15 October 2022
+Network Working Group                                         G. Lehmann
+Internet-Draft                                         Telecom Sud Paris
+Obsoletes: 4767 (if approved)                            12 October 2023
+Intended status: Standards Track                                        
+Expires: 14 April 2024
 
 
    Transport of Incident Detection Message Exchange Format version 2
                      (IDMEFv2) Messages over HTTPS
-               draft-poirotte-idmefv2-https-transport-00
+                draft-lehmann-idmefv2-https-transport-01
 
 Abstract
 
    The Incident Detection Message Exchange Format version 2 (IDMEFv2)
-   provides a way to describe any incidents detected on cyber and/or
-   physical infrastructures.
+   defines a date representation for security incidents detected on
+   cyber and/or physical infrastructures.
 
    The format is agnostic so it can be used in standalone or combined
    cyber (SIEM), physical (PSIM) and availability (NMS) monitoring
-   systems.  IDMEFv2 can also be used to describe cyber and physical
-   potential threats (CTI/PTI).
+   systems.  IDMEFv2 can also be used to represent man made or natural
+   hazards threats.
 
-   IDMEF improves situational awareness by facilitating correlation of
+   IDMEFv2 improves situational awareness by facilitating correlation of
    multiple types of events using the same base format thus enabling
    efficient detection of complex and combined cyber and physical
-   attacks on critical infrastructures.
+   attacks and incidents.
+
+   This document defines a way to transport IDMEFv2 Alerts over HTTPs.
 
    If approved this document would obsolete RFC4767.
 
@@ -47,20 +48,19 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2023.
+   This Internet-Draft will expire on 14 April 2024.
 
 
 
 
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 1]
+Lehmann                   Expires 14 April 2024                 [Page 1]
 
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
 
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -76,130 +76,69 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  About the transmission protocol . . . . . . . . . . . . .   3
-     1.2.  About the JSON serialization method . . . . . . . . . . .   3
-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   3.  Normative sections  . . . . . . . . . . . . . . . . . . . . .   4
-   4.  Transmission of IDMEFv2 Messages over HTTPS . . . . . . . . .   5
-     4.1.  Architecture overview . . . . . . . . . . . . . . . . . .   5
-     4.2.  Listening port  . . . . . . . . . . . . . . . . . . . . .   5
-     4.3.  Compatibility with HTTP(S)  . . . . . . . . . . . . . . .   6
-     4.4.  Compatibility with DNS  . . . . . . . . . . . . . . . . .   7
-     4.5.  Compatibility with TLS  . . . . . . . . . . . . . . . . .   8
-       4.5.1.  Acceptable TLS versions . . . . . . . . . . . . . . .   8
-       4.5.2.  Acceptable ciphersuites . . . . . . . . . . . . . . .   8
-       4.5.3.  Authentication  . . . . . . . . . . . . . . . . . . .   8
-       4.5.4.  Certificate validation  . . . . . . . . . . . . . . .   8
-       4.5.5.  PKI integration and certificate issuance  . . . . . .   9
-     4.6.  Locating the HTTPS endpoint using DNS . . . . . . . . . .  10
-   5.  The JavaScript Object Notation Serialization Method . . . . .  11
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  14
-   Appendix A.  Serialization examples . . . . . . . . . . . . . . .  15
-     A.1.  Physical intrusion  . . . . . . . . . . . . . . . . . . .  15
-     A.2.  Cyberattack . . . . . . . . . . . . . . . . . . . . . . .  17
-     A.3.  Server outage . . . . . . . . . . . . . . . . . . . . . .  19
-     A.4.  Combined incident . . . . . . . . . . . . . . . . . . . .  20
-   Appendix B.  HTTP Result Codes  . . . . . . . . . . . . . . . . .  21
-   Appendix C.  Transmission examples  . . . . . . . . . . . . . . .  22
-     C.1.  Acknowledged IDMEFv2 message  . . . . . . . . . . . . . .  23
-     C.2.  Unsupported serialization format  . . . . . . . . . . . .  23
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Normative sections  . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Transmission of IDMEFv2 Messages over HTTPS . . . . . . . . .   3
+     4.1.  Architecture overview . . . . . . . . . . . . . . . . . .   4
+     4.2.  Listening port  . . . . . . . . . . . . . . . . . . . . .   4
+     4.3.  Compatibility with HTTP(S)  . . . . . . . . . . . . . . .   4
+     4.4.  Compatibility with DNS  . . . . . . . . . . . . . . . . .   6
+     4.5.  Compatibility with TLS  . . . . . . . . . . . . . . . . .   6
+       4.5.1.  Acceptable TLS versions . . . . . . . . . . . . . . .   6
+       4.5.2.  Acceptable ciphersuites . . . . . . . . . . . . . . .   7
+       4.5.3.  Authentication  . . . . . . . . . . . . . . . . . . .   7
+       4.5.4.  Certificate validation  . . . . . . . . . . . . . . .   7
+       4.5.5.  PKI integration and certificate issuance  . . . . . .   8
+     4.6.  Locating the HTTPS endpoint using DNS . . . . . . . . . .   9
+   5.  The JavaScript Object Notation Serialization Method . . . . .  10
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+   8.  Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  12
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  13
+   Appendix A.  HTTP Result Codes  . . . . . . . . . . . . . . . . .  14
+   Appendix B.  Transmission examples  . . . . . . . . . . . . . . .  15
+     B.1.  Acknowledged IDMEFv2 message  . . . . . . . . . . . . . .  15
+     B.2.  Unsupported serialization format  . . . . . . . . . . . .  16
+     B.3.  Content negotiation failure . . . . . . . . . . . . . . .  16
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  17
 
 
 
-Poirotte, et al.          Expires 18 April 2023                 [Page 2]
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 2]
 
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
 
-
-     C.3.  Content negotiation failure . . . . . . . . . . . . . . .  23
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 1.  Introduction
 
    [RFC-DEV-IDMEFv2] defines a model for the purpose of describing
    security alerts and incidents as IDMEF version 2 (IDMEFv2) messages.
    It also defines serialization methods so that IDMEFv2 messages can be
-   exchanged between Computer Security Incident Response Teams (CSIRTs)
-   or those responsible for security incident handling for service
-   providers (SPs).  The defined serializations make it easy for CSIRTs
-   to exchange data in a way that is both easy and secure for machines
-   to parse.
+   shared between IDMEFv2 Analyser detecting incidents and IDMEFv2
+   Manager, the management systems that may need to interact with them.
 
 1.1.  About the transmission protocol
 
    IDMEFv2 defines a message format, not a protocol, as the sharing of
-   messages is assumed to be out of scope in order to allow CSIRTs to
-   exchange and store messages in a way most suited to their established
-   incident-handling processes.  However, a protocol specification is
-   required so that actual exchanges can take place between the involved
-   entities.  Defining a common protocol also ensures interoperability
-   between otherwise concurrent implementations.
+   messages is assumed to be out of scope in order to allow Analyzers
+   and Managers to exchange and store alerts in a way most suited to
+   their established incident-detection processes.  However, a protocol
+   specification is required so that actual exchanges can take place
+   between the involved programs.  Defining a common protocol also
+   ensures interoperability between otherwise concurrent
+   implementations.
 
    This document specifies the transport of IDMEFv2 messages within
    [RFC9112] or [RFC9113] Request and Response messages over Transport
    Layer Security, a.k.a.  [RFC9110].
 
-1.2.  About the JSON serialization method
-
-   Although the IDMEF data model strives to be independent from any
-   particular representation, such a serialization is necessary if IDMEF
-   is to be used as an exchange format.  Moreover, an interoperable
-   serialization scheme is required for compatibility reasons.
-
    This document describes a serialization method for IDMEF messages
    based on the [RFC8259].
-
-   This choice is motivated by the following factors:
-
-   *  The JSON format is already largely used inside the cybersecurity
-      community, e.g. to replace the syslog format for log shopping.  It
-      thus lowers the barrier to entry for implementors.
-
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 3]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-   *  JSON is often seen as a simpler format compared to XML, from both
-      an implementor's and user's point of view.  Because of the way XML
-      works, XML documents are usually larger than JSON ones when
-      representing the same content, due for example to the use of
-      namespaces and the repetition of the elements' tag name inside the
-      markup.
-
-   *  An effort has been made to make IDMEF useable from end to end,
-      i.e. from the incident detectors to the operator.  IDMEF messages
-      must therefore be easy to store in a database, especially NoSQL
-      databases which are often used to store very large amounts of
-      data.  JSON is a good format for native NoSQL storage.
-
-   In contrast, the authors acknowledge that:
-
-   *  JSON may suffer from issues of its own.  For instance, string
-      processing may require additional normalization steps (e.g. when
-      comparing two JSON strings).  and two JSON parsers may handle
-      duplicate members inside a JSON object differently.  These
-      concerns are largely covered in [RFC8259] and in this document's
-      Security Considerations (Section 6).
-
-   *  Other formats similar to JSON could also fit this role (e.g.
-      YAML, TOML).  Those formats are less widely used by incident
-      management tools and operators.  They may also introduce
-      vulnerabilities and incompatibilities of their own (e.g. there are
-      multiple versions of YAML, a YAML document may rely on
-      implementation-specific features using so-called "tags", etc.).
-      In addition, most of those formats focus on human-readability,
-      while this document focuses mainly on performance and security.
 
 2.  Terminology
 
@@ -217,19 +156,19 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    *  The JavaScript Object Notation (JSON) serialization method defined
       in Section 5
 
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 4]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
 4.  Transmission of IDMEFv2 Messages over HTTPS
 
    This section specifies the details of the transport of IDMEFv2
    messages [RFC-DEV-IDMEFv2] over HTTPS.
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 3]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    [BCP56] contains a number of important considerations when using HTTP
    for application protocols.  These include the size of the payload for
@@ -269,19 +208,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    other than the well-known port; this configuration is out of scope
    for this specification.
 
-
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 5]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
 4.3.  Compatibility with HTTP(S)
 
    The implementations MUST implement all REQUIRED functionality for
@@ -291,6 +217,14 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    [RFC7301] as defined in [RFC9113] ch 3.3.  The "h2c" protocol
    (HTTP/2.0 over cleartext) MUST NOT be used.  HTTP over TLS (also
    known as HTTPS) is specified in [RFC9110] ch 2.
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 4]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    Each IDMEFv2 message MUST be sent as a separate HTTP Request.
    However, an implementation MAY send multiple HTTP Requests in
@@ -330,14 +264,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    types advertised by the client, it SHOULD respond with an appropriate
    HTTP code (406 Not Acceptable).
 
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 6]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    If the Response does not contain a body, the appropriate HTTP code
    SHOULD be returned to the client (204 No Content).  In this case, the
    'Content-Type' header can be omitted from the HTTP Response entirely.
@@ -346,6 +272,15 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    that all IDMEFv2 systems conforming to this document support the JSON
    serialization format defined in [RFC-DEV-IDMEFv2], with a media type
    set to 'application/json'.
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 5]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    If an IDMEFv2 system receives an improper IDMEFv2 message in an HTTP
    Request, it MUST return an appropriate 4xx Client Error result code
@@ -370,7 +305,7 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    error logging format is considered an implementation detail and is
    out of scope for this specification.
 
-   Appendix B provides informative guidance on how to map various error
+   Appendix A provides informative guidance on how to map various error
    conditions to an appropriate HTTP result code.
 
    IDMEFv2 systems relying on HTTP/1.1 MUST support and SHOULD use
@@ -386,14 +321,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    consortium.  The protocol provides no in-band method for handling a
    change of address of an IDMEFv2 system.
 
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 7]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
 4.5.  Compatibility with TLS
 
 4.5.1.  Acceptable TLS versions
@@ -401,6 +328,15 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    IDMEFv2 systems SHOULD use TLS version 1.3 [RFC8446] or higher for
    confidentiality, identification, and authentication, when sending
    IDMEFv2 messages over HTTPS.
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 6]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    IDMEFv2 systems MUST NOT request, offer, or use any version of SSL,
    or any version of TLS prior to 1.3, due to known weaknesses in these
@@ -442,14 +378,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       by an IDMEFv2 system, the verification MUST fail and the receiving
       IDMEFv2 system MUST close the connection.
 
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 8]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    *  An IDMEFv2 system MAY match the DNS-ID with a reverse DNS lookup
       of the connecting IDMEFv2 peer; this support SHOULD allow the
       lookup to be cached and/or done in advance in order to ensure
@@ -457,6 +385,14 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
 
    *  IDMEFv2 systems MUST support the verification of certificates
       against an explicit list of approved peer certificates.
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 7]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    *  IDMEFv2 systems MAY apply additional security measures such as IP
       filtering to further restrict the list of authorized peers.  Such
@@ -495,17 +431,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       providers MAY include the URI-ID identifier type in certificate
       requests.
 
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                 [Page 9]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    *  Support for the CN-ID identifier type [RFC5280] is discouraged.
       Certification authorities that issue IDMEFv2-specific certificates
       SHOULD NOT support the CN-ID identifier type.  IDMEFv2 service
@@ -516,6 +441,14 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       the wildcard character '*'.  Certification authorities that issue
       IDMEFv2-specific certificates MUST refuse to issue certificates
       containing a wildcard character.
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 8]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    Great care must be taken by administrators when selecting the PKI to
    use, as trusting a rogue PKI could have dramatic results on the
@@ -552,16 +485,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
 
    _idmef._tcp.example.net.
 
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 10]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    The requesting system will receive the list of SRV records published
    in DNS that satisfy the requested criteria.  The following is an
    example of such a record:
@@ -573,6 +496,15 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    there are no matching SRV records available for the domain name, the
    client SHOULD NOT attempt to 'walk the tree' by removing the least
    significant portion of the constructed fully qualified domain name.
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                 [Page 9]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
 5.  The JavaScript Object Notation Serialization Method
 
@@ -605,19 +537,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       model.  E.g. the "Version" attribute of the Alert class is stored
       under the name "Version" inside the top-level JSON object.
 
-
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 11]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    *  Lists from the IDMEF data model are represented as JSON arrays
       ([RFC8259] ch 5).  This also applies to aggregate classes where a
       list is expected.  E.g. the "Sensor" member inside the top-level
@@ -634,6 +553,14 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       integer value and a floating-point (decimal) value, IDMEF
       attributes with the "INT" and "FLOAT" type annotations are both
       represented as JSON numbers ([RFC8259] ch 6).
+
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 10]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
 6.  Security Considerations
 
@@ -666,14 +593,6 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    confidentiality and integrity of specific data inside the message at
    the field's level).  Such additions SHOULD be designed with
    interoperability in mind, so that implementations that do not
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 12]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    recognize these extensions can still process IDMEFv2 messages in a
    reasonable manner without degrading the security provided by these
    additions (e.g. by omitting the additions entirely when passing the
@@ -690,9 +609,26 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    IANA has assigned port 12345/tcp to IDMEFv2 over HTTP/TLS with
    service name "IDMEFv2 over HTTP/TLS".
 
-8.  References
 
-8.1.  Normative References
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 11]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
+
+8.  Acknowledgement
+
+   The following groups and individuals contributed to the creation of
+   this document and should be recognized for their efforts.
+
+   *  Thomas Andrejak & François Poirotte (Co-authors of the first
+      version of this document)
+
+9.  References
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -700,10 +636,10 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
               <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC-DEV-IDMEFv2]
-              Lehmann, G., Andrejak, T., and F. Poirotte, "The Incident
-              Detection Message Exchange Format (IDMEF) version 2", Work
-              in Progress, Internet-Draft, draft-lehmann-idmefv2-00, 15
-              October 2022, <https://github.com/SECEF/>.
+              Lehmann, G., "The Incident Detection Message Exchange
+              Format (IDMEF) version 2", Work in Progress, Internet-
+              Draft, draft-lehmann-idmefv2-01, 12 October 2023,
+              <https://github.com/IDMEFv2/>.
 
    [RFC9112]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP/1.1", STD 99, RFC 9112, DOI 10.17487/RFC9112,
@@ -723,16 +659,20 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
               DOI 10.17487/RFC9110, June 2022,
               <https://www.rfc-editor.org/info/rfc9110>.
 
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 13]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
+
+
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 12]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -757,7 +697,7 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
 
-8.2.  Informative References
+9.2.  Informative References
 
    [RFC3232]  Reynolds, J., Ed., "Assigned Numbers: RFC 1700 is Replaced
               by an On-line Database", RFC 3232, DOI 10.17487/RFC3232,
@@ -778,18 +718,17 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
               DOI 10.17487/RFC2782, February 2000,
               <https://www.rfc-editor.org/info/rfc2782>.
 
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 14]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
    [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
               "Transport Layer Security (TLS) Application-Layer Protocol
               Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
               July 2014, <https://www.rfc-editor.org/info/rfc7301>.
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 13]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    [RFC7457]  Sheffer, Y., Holz, R., and P. Saint-Andre, "Summarizing
               Known Attacks on Transport Layer Security (TLS) and
@@ -807,348 +746,7 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
               Moriarty, K. and S. Farrell, "Deprecating TLS 1.0 and TLS
               1.1", BCP 195, RFC 8996, March 2021.
 
-Appendix A.  Serialization examples
-
-   This section contains several examples of events/incidents described
-   using the IDMEF Data Model.
-
-   For each example, the serialization method listed in Section 5 was
-   used on the original IDMEF message to produce a JSON representation.
-
-A.1.  Physical intrusion
-
-   Appendix A.1 describes an incident where an unidentified man was
-   detected on company premises near the building where server room A is
-   located.
-
-   {
-     "Version": "2.0",
-     "ID": "819df7bc-35ef-40d8-bbee-1901117370b1",
-     "Description": "Potential intruder detected",
-     "Severity": "Low",
-     "Status": "Incident",
-     "Cause": "Malicious",
-     "CreateTime": "2021-05-10T16:52:13.075994+00:00",
-     "StartTime": "2021-05-10T16:52:13+00:00",
-     "Category": [
-       "Intrusion.Burglary"
-     ],
-     "Analyzer": {
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 15]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-       "Name": "BigBrother",
-       "Hostname": "bb.example.com",
-       "Type": "Physical",
-       "Model": "Big Brother v42",
-       "Category": [
-         "HAR",
-         "FRC"
-       ],
-       "Data": [
-         "Images"
-       ],
-       "Method": [
-         "Movement",
-         "Biometric",
-         "AI"
-       ],
-       "IP": "192.0.2.3"
-     },
-     "Sensor": [
-       {
-         "IP": "192.0.2.4",
-         "Name": "Camera #23",
-         "Model": "SuperDuper Camera v1",
-         "Location": "Hallway to server room A1"
-       }
-     ],
-     "Source": [
-       {
-         "Note": "Black Organization, aka. APT 4869"
-       }
-     ],
-     "Vector": [
-       {
-         "Category": ["Man"],
-         "TI": ["Name:FBI-Wanted"],
-         "Name": "John Doe",
-         "Note": "Codename Vodka, known henchman for APT 4869",
-         "Size": "Medium",
-         "Location": "Hallway to server room A1",
-         "Attachment": ["pic01", "wanted"]
-       }
-     ],
-     "Attachment": [
-       {
-         "Name": "wanted",
-         "FileName": "fbi-wanted-poster.jpg",
-         "Size": 1234567,
-         "Ref": ["https://www.fbi.gov/wanted/topten"],
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 16]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-         "ContentType": "image/jpg",
-         "ContentEncoding": "base64",
-         "Content": "VC4gQW5kcmVqYWssIEcuIExlaG1hbm4sIEYuIFBvaXJvdHRl"
-       },
-       {
-         "Name": "pic01",
-         "Note": "Hi-res picture showing John Doe near server room A1",
-         "ExternalURI": ["ftps://192.0.2.3/cam23/20210510165211.jpg"],
-         "ContentType": "image/jpg"
-       }
-     ]
-   }
-
-A.2.  Cyberattack
-
-   Appendix A.2 describes an incident related to a potential bruteforce
-   attack against the "root" user account of the server at 192.0.2.2 and
-   at 2001:db8::/32.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 17]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-   {
-     "Version": "2.0",
-     "ID": "819df7bc-35ef-40d8-bbee-1901117370b2",
-     "Description": "Potential bruteforce attack on root user account",
-     "Severity": "Medium",
-     "CreateTime": "2021-05-10T16:55:29.196408+00:00",
-     "StartTime": "2021-05-10T16:55:29+00:00",
-     "Category": [
-       "Attempt.Login"
-     ],
-     "Analyzer": {
-       "Name": "SIEM",
-       "Hostname": "siem.example.com",
-       "Type": "Cyber",
-       "Model": "Prelude SIEM 5.2",
-       "Category": [
-         "SIEM",
-         "LOG"
-       ],
-       "Data": [
-         "Log"
-       ],
-       "Method": [
-         "Monitor",
-         "Signature"
-       ],
-       "IP": "192.0.2.2"
-     },
-     "Sensor": [
-       {
-         "IP": "192.0.2.3",
-         "Name": "syslog",
-         "Hostname": "www.example.com",
-         "Model": "rsyslog 8.2110",
-         "Location": "Server room A1, rack 10"
-       }
-     ],
-     "Target": [
-       {
-         "IP": "192.0.2.3",
-         "Hostname": "www.example.com",
-         "Location": "Server room A1, rack 10",
-         "User": "root"
-       }
-     ]
-   }
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 18]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-A.3.  Server outage
-
-   Appendix A.3 describes an incident where the webserver at
-   "www.example.com" encountered some kind of failure condition
-   resulting in an outage.
-
-   {
-     "Version": "2.0",
-     "ID": "819df7bc-35ef-40d8-bbee-1901117370b3",
-     "Description": "A server did not reply to an ICMP ping request",
-     "Severity": "Medium",
-     "Status": "Incident",
-     "Cause": "Unknown",
-     "CreateTime": "2021-05-10T16:59:11.875209+00:00",
-     "StartTime": "2021-05-10T16:59:11.875209+00:00",
-     "Category": [
-       "Availability.Outage"
-     ],
-     "Analyzer": {
-       "Name": "NMS",
-       "Hostname": "nms.example.com",
-       "Type": "Availability",
-       "Model": "Vigilo NMS 5.2",
-       "Category": [
-         "NMS"
-       ],
-       "Data": [
-         "Network"
-       ],
-       "Method": [
-         "Monitor"
-       ],
-       "IP": "192.0.2.1"
-     },
-     "Target": [
-       {
-         "IP": "192.0.2.2",
-         "Hostname": "www.example.com",
-         "Service": "website",
-         "Location": "Server room A1, rack 10"
-       }
-     ]
-   }
-
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 19]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-A.4.  Combined incident
-
-   Appendix A.4 describes a combined incident resulting from the
-   correlation of the previous physical, cyber and availability
-   incidents.
-
-   {
-     "Version": "2.0",
-     "ID": "819df7bc-35ef-40d8-bbee-1901117370b4",
-     "Description": "Intrusion and Sabotage detected",
-     "Severity": "High",
-     "Status": "Incident",
-     "Cause": "Malicious",
-     "CreateTime": "2021-05-10T16:59:15.075994+00:00",
-     "StartTime": "2021-05-10T16:52:11+00:00",
-     "Category": [
-       "Intrusion.Burglary",
-       "Attempt.Login",
-       "Intrusion.SysCompromise",
-       "Availability.Outage",
-       "Availability.Sabotage",
-       "Availability.Failure"
-     ],
-     "CorrelID": [
-       "819df7bc-35ef-40d8-bbee-1901117370b1",
-       "819df7bc-35ef-40d8-bbee-1901117370b2",
-       "819df7bc-35ef-40d8-bbee-1901117370b3"
-     ],
-     "Analyzer": {
-       "Name": "Correlator",
-       "Hostname": "correlator.example.com",
-       "Type": "Combined",
-       "Model": "Unity 360 Hybrid Correlator v5.2",
-       "Category": [
-       ],
-       "Data": [
-         "Alert"
-       ],
-       "Method": [
-         "Correlation"
-       ],
-       "IP": "192.0.2.4"
-     },
-     "Source": [
-       {
-         "Note": "Black Organization, aka. APT 4869"
-       }
-     ],
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 20]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-     "Vector": [
-       {
-         "Category": ["Man"],
-         "TI": ["Name:FBI-Wanted"],
-         "Name": "John Doe",
-         "Note": "Codename Vodka, known henchman for APT 4869",
-         "Size": "Medium"
-       }
-     ],
-     "Target": [
-       {
-         "Location": "Server room A1"
-       },
-       {
-         "IP": "192.0.2.2",
-         "Hostname": "www.example.com",
-         "User": "root"
-       },
-       {
-         "IP": "192.0.2.2",
-         "Hostname": "www.example.com",
-         "Service": "website"
-       }
-     ]
-   }
-
-Appendix B.  HTTP Result Codes
+Appendix A.  HTTP Result Codes
 
    The following table MAY be used as general guidance by IDMEFv2
    systems acting as HTTP servers when mapping various error conditions
@@ -1170,14 +768,6 @@ Appendix B.  HTTP Result Codes
       | Unauthorized request (e.g. a | 403 (Forbidden)             |
       | request from an unauthorized |                             |
       | IP address)                  |                             |
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 21]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
       +------------------------------+-----------------------------+
       | The HTTP request uses a      | 405 (Method Not Allowed).   |
       | method other than 'POST'     | In addition, the "Allow"    |
@@ -1188,6 +778,14 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
       | Failure to negotiate the     | 406 (Not Acceptable)        |
       | response's media type based  |                             |
       | on the "Accept" HTTP request |                             |
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 14]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
+
       | header.                      |                             |
       +------------------------------+-----------------------------+
       | Missing "Content-Length"     | 411 (Length required), but  |
@@ -1216,25 +814,13 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
 
           Table 1: Mapping error conditions to HTTP result codes
 
-Appendix C.  Transmission examples
+Appendix B.  Transmission examples
 
    In the examples below, ">" denotes a request sent by the IDMEFv2
    system acting as an HTTP client to an IDMEFv2 system acting as an
    HTTP server, while "<" denotes a response to such requests.
 
-
-
-
-
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 22]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
-
-C.1.  Acknowledged IDMEFv2 message
+B.1.  Acknowledged IDMEFv2 message
 
    In this example, the IDMEFv2 system acting as an HTTP server
    acknowledges the message sent by an IDMEFv2 system acting as an HTTP
@@ -1242,6 +828,19 @@ C.1.  Acknowledged IDMEFv2 message
    back to the client, it replies with HTTP result code 204 (No
    content), and both the "Content-Type" and "Content-Length" headers
    are omitted from the response.
+
+
+
+
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 15]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    > POST / HTTP/1.1\r\n
    > Host: idmefv2.example.com:12345\r\n
@@ -1255,7 +854,7 @@ C.1.  Acknowledged IDMEFv2 message
    < Connection: close\r\n
    < \r\n
 
-C.2.  Unsupported serialization format
+B.2.  Unsupported serialization format
 
    The following example illustrates the situation where an IDMEFv2
    system acting as an HTTP client tries to send a message using a
@@ -1277,18 +876,11 @@ C.2.  Unsupported serialization format
    < \r\n
    < {"error": "Unsupported or unrecognized serialization format"}
 
-C.3.  Content negotiation failure
+B.3.  Content negotiation failure
 
    In this example, the IDMEFv2 system acting as an HTTP client sends an
    IDMEFv2 message and requests that the server reponds using the
    "application/x-example-type" media type.
-
-
-
-Poirotte, et al.          Expires 18 April 2023                [Page 23]
-
-Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
-
 
    Since the server wishes to include details in the HTTP response but
    does not know how to generate a response using that media type, it
@@ -1298,6 +890,13 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    media types the server is willing to use and the client may try to
    resend the request using one of the alternative media types presented
    inside the new HTTP request's "Accept" header.
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 16]
+
+Internet-Draft          IDMEFv2 - HTTPS Transport           October 2023
+
 
    > POST / HTTP/1.1\r\n
    > Host: idmefv2.example.com:12345\r\n
@@ -1315,19 +914,7 @@ Internet-Draft          IDMEFv2 - HTTPS Transport           October 2022
    < {"error": "Cannot reply using 'application/x-example-type'
      media type",\n"alternatives": ["application/json"]}\n
 
-Authors' Addresses
-
-   Francois Poirotte
-   CS GROUP
-   France
-   Email: francois.poirotte@csgroup.eu
-
-
-   Thomas Andrejak
-   CS GROUP
-   France
-   Email: thomas.andrejak@csgroup.eu
-
+Author's Address
 
    Gilles Lehmann
    Telecom Sud Paris
@@ -1341,4 +928,25 @@ Authors' Addresses
 
 
 
-Poirotte, et al.          Expires 18 April 2023                [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lehmann                   Expires 14 April 2024                [Page 17]
