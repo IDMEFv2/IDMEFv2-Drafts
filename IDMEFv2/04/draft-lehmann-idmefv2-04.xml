@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-03" ipr="trust200902" consensus="true" obsoletes="4765">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-04" ipr="trust200902" consensus="true" obsoletes="4765">
   <front>
     <title abbrev="IDMEFv2">The Incident Detection Message Exchange Format version 2 (IDMEFv2)</title>
     <author fullname="Gilles Lehmann">
@@ -12,7 +12,7 @@
         <email>gilles.lehmann@telecom-sudparis.eu</email>
       </address>
     </author>
-    <date day="7" month="April" year="2024"/>
+    <date day="4" month="October" year="2024"/>
     <keyword>RFC4765</keyword>
     <keyword>RFC4766</keyword>
     <keyword>IDMEF</keyword>
@@ -554,31 +554,34 @@ Source(0).IP</sourcecode>
         <t>The Alert class contains high level information about the event that triggered the alert.</t>
         <figure anchor="class_alert_diagram">
           <name>The Alert class</name>
-          <artwork type="ascii-art" align="center">+---------------------------+
-|           Alert           |
-+---------------------------+
-| STRING      Version       |
-| UUID        ID            |
-| STRING      Entity        |
-| ENUM[]      Category      |
-| STRING      ext-Category  |
-| ENUM        Cause         |
-| STRING      Description   |
-| ENUM        Status        |
-| ENUM        Priority      |
-| FLOAT       Confidence    |
-| STRING      Note          |
-| TIMESTAMP   CreateTime    |
-| TIMESTAMP   StartTime     |
-| TIMESTAMP   EndTime       |
-| STRING[]    AltNames      |
-| STRING[]    AltCategory   |
-| URI[]       Ref           |
-| UUID[]      CorrelID      |
-| CONDITION[] AggrCondition |
-| UUID[]      PredID        |
-| UUID[]      RelID         |
-+---------------------------+</artwork>
+          <artwork type="ascii-art" align="center">+------------------------------+
+|              Alert           |
++------------------------------+
+| STRING      Version          |
+| UUID        ID               |
+| STRING      OrganisationName |
+| STRING      OrganisationId   |
+| STRING      EntityName       |
+| STRING      EntityId         |
+| ENUM[]      Category         |
+| STRING      ext-Category     |
+| ENUM        Cause            |
+| STRING      Description      |
+| ENUM        Status           |
+| ENUM        Priority         |
+| FLOAT       Confidence       |
+| STRING      Note             |
+| TIMESTAMP   CreateTime       |
+| TIMESTAMP   StartTime        |
+| TIMESTAMP   EndTime          |
+| STRING[]    AltNames         |
+| STRING[]    AltCategory      |
+| URI[]       Ref              |
+| UUID[]      CorrelID         |
+| CONDITION[] AggrCondition    |
+| UUID[]      PredID           |
+| UUID[]      RelID            |
++------------------------------+</artwork>
         </figure>
         <t>The aggregate classes that make up Alert are:</t>
         <dl newline="true">
@@ -651,13 +654,44 @@ Source(0).IP</sourcecode>
                             Unique identifier for the alert.</t>
                     </dd>
                 
-                    <dt>Entity</dt>
+                    <dt>OrganisationName</dt>
                     <dd>
-                        <t>Optional.
-                            Tenant ID to support multi-tenancy (e.g. decentralized infrastructure,
-                            local agency, subsidiary  company, etc.).</t>
-                        <t>Should be used when there are multiple sites/locations or multiple tenants
-                            (e.g. by Managed Security Services Providers).</t>
+                        <t>Optional. Corporate/Main Office Organisation Name</t>
+                        <t>Useful if alerts are sent to a multi-organisation incident detection system.</t>
+                        <t>Example: ACME Corporation</t>
+                    </dd>
+                
+                    <dt>OrganisationId</dt>
+                    <dd>
+                        <t>Optional.  Corporate/Main Office Organisation ID. Where possible official organisation ID manage by national authority.</t>
+                        <t>Useful if alerts are sent to a multi-organisation incident detection system.</t>
+                        <t>This ID has to be chosen depending on the overall detection perimeter and the nature of the monitored organisation (Private/Public, Commercial, International, etc.)</t>
+                        <t>Examples: OrganisationId in France could be SIREN, in England could be CR, Germany could be  Handelsregisternummer, Spain could be CIF, Italia could be Partita IVA, USA could be EIN, etc.  Commercial OrganisationId in Europe could be V.A.T ID</t>
+                    </dd>
+                
+                    <dt>EntityName</dt>
+                    <dd>
+                        <t>Optional. Entity Name, monitored by the organisation, where the incident occurred.</t>
+                        <t>Could be a town, region or country name or an internal name.  Could also be the name of a client for a MSSP centralizing it's client incidents in a single system.</t>
+                        <t>Do not repeat the organisation name in the EntityName</t>
+                        <t>Example :</t>
+                        <ul>
+                            <li>
+                                <t>ACME HeadQuaters is located in Paris France and has a local office in India</t>
+                            </li>
+                            <li>
+                                <t>If the incident occurred in the local office : "OrganisationName" : " ACME" , "EntityName" : "India"</t>
+                            </li>
+                            <li>
+                                <t>If the incident occurred in the headquaters : "OrganisationName" : "ACME", "EntityName" : "Headquaters" (or "Paris")</t>
+                            </li>
+                        </ul>
+                    </dd>
+                
+                    <dt>EntityId</dt>
+                    <dd>
+                        <t>Optional. Entity ID, monitored by the organisation, where the incident occurred.</t>
+                        <t>Useful if organisation and entity are not directly linked, like a client and a MSSP.</t>
                     </dd>
                 
                     <dt>Category</dt>
@@ -3869,7 +3903,58 @@ Source(0).IP</sourcecode>
                         </tr>
                         <tr>
                             <td>
-                                <t>Entity</t>
+                                <t>OrganisationName</t>
+                            </td>
+                            <td>
+                                <t>String</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <t>OrganisationID</t>
+                            </td>
+                            <td>
+                                <t>String</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <t>EntityName</t>
+                            </td>
+                            <td>
+                                <t>String</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                            <td>
+                                <t>o</t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <t>EntityID</t>
                             </td>
                             <td>
                                 <t>String</t>
@@ -6268,20 +6353,32 @@ Source(0).IP</sourcecode>
             messages prior to processing. Please note that extraneous linebreaks have been
             included due to formatting constraints.</t>
       <sourcecode type="none">{
-    "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V03)",
+    "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V04)",
     "properties": {
         "Version": {
             "description": "The version of the IDMEF format in use by this alert. During the drafts tuning period the version is equal to the draft version. Therefore it is \"2.D.V0X\" for Draft V0X.",
             "enum": [
-                "2.D.V03"
+                "2.D.V04"
             ]
         },
         "ID": {
             "description": "Unique identifier for the alert.",
             "$ref": "#/definitions/uuidType"
         },
-        "Entity": {
-            "description": "Tenant ID to support multi-tenancy (e.g. decentralized infrastructure, local agency, subsidiary company, etc.). Should be used when there are multiple sites/locations or multiple tenants (e.g. by Managed Security Services Providers).",
+        "OrganisationName": {
+            "description": "Corporate/Main Office Organisation Name Useful if alerts are sent to a multi-organisation incident detection system. Example: ACME Corporation",
+            "type": "string"
+        },
+        "OrganisationId": {
+            "description": "Corporate/Main Office Organisation ID. Where possible official organisation ID manage by national authority. Useful if alerts are sent to a multi-organisation incident detection system. This ID has to be chosen depending on the overall detection perimeter and the nature of the monitored organisation (Private/Public, Commercial, International, etc.) Examples: OrganisationId in France could be SIREN, in England could be CR, Germany could be Handelsregisternummer, Spain could be CIF, Italia could be Partita IVA, USA could be EIN, etc. Commercial OrganisationId in Europe could be V.A.T ID",
+            "type": "string"
+        },
+        "EntityName": {
+            "description": "Entity Name, monitored by the organisation, where the incident occurred. Could be a town, region or country name or an internal name. Could also be the name of a client for a MSSP centralizing it's client incidents in a single system. Do not repeat the organisation name in the EntityName Example : \n- ACME HeadQuaters is located in Paris France and has a local office in India\n- If the incident occurred in the local office : \"OrganisationName\" : \" ACME\" , \"EntityName\" : \"India\"\n- If the incident occurred in the headquaters : \"OrganisationName\" : \"ACME\", \"EntityName\" : \"Headquaters\" (or \"Paris\")",
+            "type": "string"
+        },
+        "EntityId": {
+            "description": "Entity ID, monitored by the organisation, where the incident occurred. Useful if organisation and entity are not directly linked, like a client and a MSSP.",
             "type": "string"
         },
         "Category": {
@@ -7082,7 +7179,7 @@ Source(0).IP</sourcecode>
         }
     },
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "IDMEF 2.D.V03"
+    "title": "IDMEF 2.D.V04"
 }</sourcecode>
     </section>
   </back>

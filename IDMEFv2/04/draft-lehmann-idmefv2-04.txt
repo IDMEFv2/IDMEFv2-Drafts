@@ -4,13 +4,13 @@
 
 Network Working Group                                         G. Lehmann
 Internet-Draft                                          Telecom SudParis
-Obsoletes: 4765 (if approved)                               7 April 2024
+Obsoletes: 4765 (if approved)                             4 October 2024
 Intended status: Standards Track                                        
-Expires: 9 October 2024
+Expires: 7 April 2025
 
 
    The Incident Detection Message Exchange Format version 2 (IDMEFv2)
-                        draft-lehmann-idmefv2-03
+                        draft-lehmann-idmefv2-04
 
 Abstract
 
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 October 2024.
+   This Internet-Draft will expire on 7 April 2025.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 1]
+Lehmann                   Expires 7 April 2025                  [Page 1]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 Copyright Notice
@@ -68,9 +68,9 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Revised BSD License text as
-   described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Revised BSD License.
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
 
 Table of Contents
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 2]
+Lehmann                   Expires 7 April 2025                  [Page 2]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        3.3.8.  Attachment names  . . . . . . . . . . . . . . . . . .  11
@@ -129,27 +129,27 @@ Internet-Draft                   IDMEFv2                      April 2024
    5.  The IDMEF Data Model  . . . . . . . . . . . . . . . . . . . .  16
      5.1.  Overview  . . . . . . . . . . . . . . . . . . . . . . . .  16
      5.2.  The Alert Class . . . . . . . . . . . . . . . . . . . . .  17
-     5.3.  The Analyzer Class  . . . . . . . . . . . . . . . . . . .  32
-     5.4.  The Sensor Class  . . . . . . . . . . . . . . . . . . . .  39
-     5.5.  The Source Class  . . . . . . . . . . . . . . . . . . . .  40
-     5.6.  The Target Class  . . . . . . . . . . . . . . . . . . . .  42
-     5.7.  The Vector Class  . . . . . . . . . . . . . . . . . . . .  44
-     5.8.  The Attachment Class  . . . . . . . . . . . . . . . . . .  48
-     5.9.  The JavaScript Object Notation Serialization Method . . .  50
-     5.10. Attributes completeness . . . . . . . . . . . . . . . . .  51
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  58
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  59
-   8.  Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  60
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  61
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  61
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  62
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  63
-     A.1.  Physical intrusion  . . . . . . . . . . . . . . . . . . .  63
-     A.2.  Cyberattack . . . . . . . . . . . . . . . . . . . . . . .  65
-     A.3.  Server outage . . . . . . . . . . . . . . . . . . . . . .  66
-     A.4.  Combined incident . . . . . . . . . . . . . . . . . . . .  67
-   Appendix B.  JSON Validation Schema (Non-normative) . . . . . . .  69
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  86
+     5.3.  The Analyzer Class  . . . . . . . . . . . . . . . . . . .  33
+     5.4.  The Sensor Class  . . . . . . . . . . . . . . . . . . . .  40
+     5.5.  The Source Class  . . . . . . . . . . . . . . . . . . . .  41
+     5.6.  The Target Class  . . . . . . . . . . . . . . . . . . . .  43
+     5.7.  The Vector Class  . . . . . . . . . . . . . . . . . . . .  45
+     5.8.  The Attachment Class  . . . . . . . . . . . . . . . . . .  49
+     5.9.  The JavaScript Object Notation Serialization Method . . .  51
+     5.10. Attributes completeness . . . . . . . . . . . . . . . . .  52
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  59
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  60
+   8.  Acknowledgement . . . . . . . . . . . . . . . . . . . . . . .  61
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  62
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  62
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  64
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  64
+     A.1.  Physical intrusion  . . . . . . . . . . . . . . . . . . .  64
+     A.2.  Cyberattack . . . . . . . . . . . . . . . . . . . . . . .  66
+     A.3.  Server outage . . . . . . . . . . . . . . . . . . . . . .  67
+     A.4.  Combined incident . . . . . . . . . . . . . . . . . . . .  68
+   Appendix B.  JSON Validation Schema (Non-normative) . . . . . . .  70
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  87
 
 1.  Introduction
 
@@ -165,9 +165,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 3]
+Lehmann                   Expires 7 April 2025                  [Page 3]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    Additionally, with the adoption and integration of Internet of Things
@@ -221,9 +221,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 4]
+Lehmann                   Expires 7 April 2025                  [Page 4]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
                         +-----------------------------+    +---------+
@@ -277,13 +277,13 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 5]
+Lehmann                   Expires 7 April 2025                  [Page 5]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    security teams through IODEFv2.  IODEFv2.  IDMEF is used upstream
-   IODEFv2.  IDMEfv2 ALerts can be “attached” to IODEFv2 object to
+   IODEFv2.  IDMEfv2 ALerts can be "attached" to IODEFv2 object to
    provide technical details about incidents.
 
    Syslog (System Logging) : Syslog is a loosy format with no formal
@@ -333,9 +333,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 6]
+Lehmann                   Expires 7 April 2025                  [Page 6]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 2.3.  Concepts related to event processing
@@ -383,15 +383,15 @@ Internet-Draft                   IDMEFv2                      April 2024
 2.3.6.  Analyst
 
    The analyst will be contacted by the operator to analyze complex
-   incidents that can’t be easily resolved.  The investigation starts
+   incidents that can't be easily resolved.  The investigation starts
    with the IDMEFv2 information but the analyst might need more
    information like raw logs for a deeper forensics.
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 7]
+Lehmann                   Expires 7 April 2025                  [Page 7]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 2.3.7.  Attack
@@ -445,9 +445,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 8]
+Lehmann                   Expires 7 April 2025                  [Page 8]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 3.2.2.  Floating-point values
@@ -501,9 +501,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                 [Page 9]
+Lehmann                   Expires 7 April 2025                  [Page 9]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    E.g. "1985-04-12T23:59:59.52Z" represents a moment just before April
@@ -557,9 +557,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 10]
+Lehmann                   Expires 7 April 2025                 [Page 10]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    E.g. both "https://example.com/resource" and "urn:myapp:resource" are
@@ -613,9 +613,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 11]
+Lehmann                   Expires 7 April 2025                 [Page 11]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 3.3.9.  Media types
@@ -669,9 +669,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 12]
+Lehmann                   Expires 7 April 2025                 [Page 12]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    The syntax for these IDMEF paths is expressed in the following ABNF
@@ -725,9 +725,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 13]
+Lehmann                   Expires 7 April 2025                 [Page 13]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    The syntax for these values is "function:hash_result", where
@@ -781,9 +781,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 14]
+Lehmann                   Expires 7 April 2025                 [Page 14]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 4.1.1.  Private Extension of Enumerated Values
@@ -837,9 +837,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 15]
+Lehmann                   Expires 7 April 2025                 [Page 15]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
 4.2.  Private Extension of Attributes
@@ -893,9 +893,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 16]
+Lehmann                   Expires 7 April 2025                 [Page 16]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    The message may also describe various aspects of an event using the
@@ -949,36 +949,39 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 17]
+Lehmann                   Expires 7 April 2025                 [Page 17]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
-                       +---------------------------+
-                       |           Alert           |
-                       +---------------------------+
-                       | STRING      Version       |
-                       | UUID        ID            |
-                       | STRING      Entity        |
-                       | ENUM[]      Category      |
-                       | STRING      ext-Category  |
-                       | ENUM        Cause         |
-                       | STRING      Description   |
-                       | ENUM        Status        |
-                       | ENUM        Priority      |
-                       | FLOAT       Confidence    |
-                       | STRING      Note          |
-                       | TIMESTAMP   CreateTime    |
-                       | TIMESTAMP   StartTime     |
-                       | TIMESTAMP   EndTime       |
-                       | STRING[]    AltNames      |
-                       | STRING[]    AltCategory   |
-                       | URI[]       Ref           |
-                       | UUID[]      CorrelID      |
-                       | CONDITION[] AggrCondition |
-                       | UUID[]      PredID        |
-                       | UUID[]      RelID         |
-                       +---------------------------+
+                     +------------------------------+
+                     |              Alert           |
+                     +------------------------------+
+                     | STRING      Version          |
+                     | UUID        ID               |
+                     | STRING      OrganisationName |
+                     | STRING      OrganisationId   |
+                     | STRING      EntityName       |
+                     | STRING      EntityId         |
+                     | ENUM[]      Category         |
+                     | STRING      ext-Category     |
+                     | ENUM        Cause            |
+                     | STRING      Description      |
+                     | ENUM        Status           |
+                     | ENUM        Priority         |
+                     | FLOAT       Confidence       |
+                     | STRING      Note             |
+                     | TIMESTAMP   CreateTime       |
+                     | TIMESTAMP   StartTime        |
+                     | TIMESTAMP   EndTime          |
+                     | STRING[]    AltNames         |
+                     | STRING[]    AltCategory      |
+                     | URI[]       Ref              |
+                     | UUID[]      CorrelID         |
+                     | CONDITION[] AggrCondition    |
+                     | UUID[]      PredID           |
+                     | UUID[]      RelID            |
+                     +------------------------------+
 
                          Figure 4: The Alert class
 
@@ -994,6 +997,19 @@ Internet-Draft                   IDMEFv2                      April 2024
       describe the sensor(s) that captured the information used during
       the analysis.
 
+
+
+
+
+
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 18]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       Depending on the tools/devices used to detect incidents, an
       Analyzer may rely on the output from a single sensor or from
       multiple sensors to generate alerts.  In addition, the Analyzer
@@ -1002,14 +1018,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       etc.).
 
    Source
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 18]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       Zero or more.  Instances of the Source class (Section 5.5) used to
       describe the source(s) of the incident (e.g. attackers, faulty
       device, etc.).
@@ -1050,22 +1058,77 @@ Internet-Draft                   IDMEFv2                      April 2024
    ID
       Mandatory.  Unique identifier for the alert.
 
-   Entity
-      Optional.  Tenant ID to support multi-tenancy (e.g. decentralized
-      infrastructure, local agency, subsidiary company, etc.).
 
-      Should be used when there are multiple sites/locations or multiple
-      tenants (e.g. by Managed Security Services Providers).
+
+
+Lehmann                   Expires 7 April 2025                 [Page 19]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
+   OrganisationName
+      Optional.  Corporate/Main Office Organisation Name
+
+      Useful if alerts are sent to a multi-organisation incident
+      detection system.
+
+      Example: ACME Corporation
+
+   OrganisationId
+      Optional.  Corporate/Main Office Organisation ID.  Where possible
+      official organisation ID manage by national authority.
+
+      Useful if alerts are sent to a multi-organisation incident
+      detection system.
+
+      This ID has to be chosen depending on the overall detection
+      perimeter and the nature of the monitored organisation (Private/
+      Public, Commercial, International, etc.)
+
+      Examples: OrganisationId in France could be SIREN, in England
+      could be CR, Germany could be Handelsregisternummer, Spain could
+      be CIF, Italia could be Partita IVA, USA could be EIN, etc.
+      Commercial OrganisationId in Europe could be V.A.T ID
+
+   EntityName
+      Optional.  Entity Name, monitored by the organisation, where the
+      incident occurred.
+
+      Could be a town, region or country name or an internal name.
+      Could also be the name of a client for a MSSP centralizing it's
+      client incidents in a single system.
+
+      Do not repeat the organisation name in the EntityName
+
+      Example :
+
+      *  ACME HeadQuaters is located in Paris France and has a local
+         office in India
+
+      *  If the incident occurred in the local office :
+         "OrganisationName" : " ACME" , "EntityName" : "India"
+
+      *  If the incident occurred in the headquaters :
+         "OrganisationName" : "ACME", "EntityName" : "Headquaters" (or
+         "Paris")
+
+   EntityId
+
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 20]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
+      Optional.  Entity ID, monitored by the organisation, where the
+      incident occurred.
+
+      Useful if organisation and entity are not directly linked, like a
+      client and a MSSP.
 
    Category
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 19]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       Optional.  The incident's category & subcategory as listed in
       [ENISA-RIST] using the format "category.subcategory" (e.g.
       "Attempt.Exploit").
@@ -1107,6 +1170,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | smartphone or server        |
       |      |                           | infected with a rootkit.    |
       |      |                           | Most often this refers to   |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 21]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | a connection to a           |
       |      |                           | sinkholed C2 server         |
       +------+---------------------------+-----------------------------+
@@ -1114,14 +1185,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | contacted by malware on     |
       |      |                           | infected systems.           |
       +------+---------------------------+-----------------------------+
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 20]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       | 5    | Malicious.Distribution    | URI used for malware        |
       |      |                           | distribution, e.g. a        |
       |      |                           | download URL included in    |
@@ -1163,6 +1226,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | such as CVE name (e.g.      |
       |      |                           | buffer overflow, backdoor,  |
       |      |                           | cross site scripting,       |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 22]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | etc.)                       |
       +------+---------------------------+-----------------------------+
       | 11   | Attempt.Login             | Multiple login attempts     |
@@ -1170,14 +1241,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | passwords, brute force).    |
       |      |                           | This IOC refers to a        |
       |      |                           | resource, which has been    |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 21]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | observed to perform brute-  |
       |      |                           | force attacks over a given  |
       |      |                           | application protocol.       |
@@ -1219,6 +1282,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       +------+---------------------------+-----------------------------+
       | 19   | Availability.DDoS         | Distributed Denial of       |
       |      |                           | Service attack, e.g.  SYN-  |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 23]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | Flood or UDP-based          |
       |      |                           | reflection/amplification    |
       |      |                           | attacks.                    |
@@ -1226,14 +1297,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       | 20   | Availability.Misconf      | Software misconfiguration   |
       |      |                           | resulting in service        |
       |      |                           | availability issues, e.g.   |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 22]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | DNS server with outdated    |
       |      |                           | DNSSEC Root Zone KSK.       |
       +------+---------------------------+-----------------------------+
@@ -1275,6 +1338,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | by harddisk failure or      |
       |      |                           | physical theft.             |
       +------+---------------------------+-----------------------------+
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 24]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       | 28   | Information.DataLeak      | Leaked confidential         |
       |      |                           | information like            |
       |      |                           | credentials or personal     |
@@ -1282,14 +1353,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       +------+---------------------------+-----------------------------+
       | 29   | Fraud.UnauthorizedUsage   | Using resources for         |
       |      |                           | unauthorised purposes       |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 23]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | including profit-making     |
       |      |                           | ventures, e.g. the use of   |
       |      |                           | e-mail to participate in    |
@@ -1331,6 +1394,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | attacks, e.g.  DNS open-    |
       |      |                           | resolvers or NTP servers    |
       |      |                           | with monlist enabled.       |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 25]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       +------+---------------------------+-----------------------------+
       | 35   | Vulnerable.Surface        | Potentially unwanted        |
       |      |                           | publicly accessible         |
@@ -1338,14 +1409,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | RDP or VNC.                 |
       +------+---------------------------+-----------------------------+
       | 36   | Vulnerable.Disclosure     | Publicly accessible         |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 24]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | services potentially        |
       |      |                           | disclosing sensitive        |
       |      |                           | information, e.g.  SNMP or  |
@@ -1387,6 +1450,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       +------+---------------------------+-----------------------------+
       | 42   | Meteorological.Fog        | A hazard caused by short-   |
       |      |                           | lived, micro- to meso-      |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 26]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | scale extreme weather and   |
       |      |                           | atmospheric conditions      |
       |      |                           | that last from minutes to   |
@@ -1394,14 +1465,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       +------+---------------------------+-----------------------------+
       | 43   | Meteorological.Storm      | A hazard caused by short-   |
       |      |                           | lived, micro- to meso-      |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 25]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | scale extreme weather and   |
       |      |                           | atmospheric conditions      |
       |      |                           | that last from minutes to   |
@@ -1443,6 +1506,14 @@ Internet-Draft                   IDMEFv2                      April 2024
       +------+---------------------------+-----------------------------+
       | 49   | Climatological.Wildfire   | A hazard caused by long-    |
       |      |                           | lived, meso- to macro-      |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 27]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | scale atmospheric           |
       |      |                           | processes ranging from      |
       |      |                           | intra-seasonal to multi-    |
@@ -1450,14 +1521,6 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | variability.                |
       +------+---------------------------+-----------------------------+
       | 50   | Biological.Epidemic       | A hazard caused by the      |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 26]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
       |      |                           | exposure to living          |
       |      |                           | organisms and their toxic   |
       |      |                           | substances (e.g. venom,     |
@@ -1499,38 +1562,38 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | and mosquitoes carrying     |
       |      |                           | disease-causing agents      |
       |      |                           | such as parasites,          |
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 28]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
       |      |                           | bacteria, or viruses (e.g.  |
       |      |                           | malaria).                   |
       +------+---------------------------+-----------------------------+
       | 53   | Extraterrestrial.Impact   | A hazard caused by          |
       |      |                           | asteroids, meteoroids, and  |
       |      |                           | comets as they pass near-   |
-      |      |                           | earth, enter the Earth’s    |
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 27]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
+      |      |                           | earth, enter the Earth's    |
       |      |                           | atmosphere, and/or strike   |
       |      |                           | the Earth, and by changes   |
       |      |                           | in interplanetary           |
       |      |                           | conditions that effect the  |
-      |      |                           | Earth’s magnetosphere,      |
+      |      |                           | Earth's magnetosphere,      |
       |      |                           | ionosphere, and             |
       |      |                           | thermosphere.               |
       +------+---------------------------+-----------------------------+
       | 54   | Extraterrestrial.         | A hazard caused by          |
       |      | SpaceWeather              | asteroids, meteoroids, and  |
       |      |                           | comets as they pass near-   |
-      |      |                           | earth, enter the Earth’s    |
+      |      |                           | earth, enter the Earth's    |
       |      |                           | atmosphere, and/or strike   |
       |      |                           | the Earth, and by changes   |
       |      |                           | in interplanetary           |
       |      |                           | conditions that effect the  |
-      |      |                           | Earth’s magnetosphere,      |
+      |      |                           | Earth's magnetosphere,      |
       |      |                           | ionosphere, and             |
       |      |                           | thermosphere.               |
       +------+---------------------------+-----------------------------+
@@ -1556,19 +1619,18 @@ Internet-Draft                   IDMEFv2                      April 2024
       |      |                           | Section 4.1.1)              |
       +------+---------------------------+-----------------------------+
 
+
+
+Lehmann                   Expires 7 April 2025                 [Page 29]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                           Table 1: Incident taxonomy
 
    ext-Category
       Optional.  A means by which to extend the Category attribute. (see
       Section 4.1.1)
-
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 28]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
 
    Cause
       Optional.  Alert cause.  The cause can be modified by any analyser
@@ -1615,15 +1677,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-
-
-
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 29]
+Lehmann                   Expires 7 April 2025                 [Page 30]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        +======+==========+===========================================+
@@ -1642,7 +1698,7 @@ Internet-Draft                   IDMEFv2                      April 2024
       Optional.  Priority of the alert.  Priority is defined by
       conbining impact and urgency.  It indicates how fast the incident
       should be taken care of.  Impact defines the enormity of the
-      situation and mostly deals with “How Many” or “how much” question.
+      situation and mostly deals with "How Many" or "how much" question.
       It can be in terms of people, finances, systems, etc.  How many
       people and/or systems impacted, how badly are they impacted (is
       there potential physical impact ?) , how much financial loss,
@@ -1677,9 +1733,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 30]
+Lehmann                   Expires 7 April 2025                 [Page 31]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    Note
@@ -1733,9 +1789,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 31]
+Lehmann                   Expires 7 April 2025                 [Page 32]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       Optional.  A list of IDMEF fields used to aggregate events.  The
@@ -1789,9 +1845,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 32]
+Lehmann                   Expires 7 April 2025                 [Page 33]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    The Analyzer class has the following attributes:
@@ -1845,9 +1901,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 33]
+Lehmann                   Expires 7 April 2025                 [Page 34]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        +======+===========+===========================================+
@@ -1901,9 +1957,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 34]
+Lehmann                   Expires 7 April 2025                 [Page 35]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        | 22   | WIDS      | Wi-Fi Intrusion Detection System          |
@@ -1957,9 +2013,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 35]
+Lehmann                   Expires 7 April 2025                 [Page 36]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
           +======+===============+================================+
@@ -2013,9 +2069,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 36]
+Lehmann                   Expires 7 April 2025                 [Page 37]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
           +------+---------------+--------------------------------+
@@ -2069,9 +2125,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 37]
+Lehmann                   Expires 7 April 2025                 [Page 38]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       +======+=============+===========================================+
@@ -2125,9 +2181,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 38]
+Lehmann                   Expires 7 April 2025                 [Page 39]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    GeoLocation
@@ -2181,9 +2237,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 39]
+Lehmann                   Expires 7 April 2025                 [Page 40]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       This SHOULD be a fully qualified domain name, but may not conform
@@ -2237,9 +2293,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 40]
+Lehmann                   Expires 7 April 2025                 [Page 41]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
                         +------------------------+
@@ -2293,9 +2349,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 41]
+Lehmann                   Expires 7 April 2025                 [Page 42]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       Please note that the same attribute may appear multiple times
@@ -2349,9 +2405,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 42]
+Lehmann                   Expires 7 April 2025                 [Page 43]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
                         +------------------------+
@@ -2405,9 +2461,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 43]
+Lehmann                   Expires 7 April 2025                 [Page 44]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    Port
@@ -2435,7 +2491,7 @@ Internet-Draft                   IDMEFv2                      April 2024
 5.7.  The Vector Class
 
    The Vector class describes the vector(s) of the event(s) leading up
-   to the alert.  • Name, location, description, …
+   to the alert.  o Name, location, description, ...
 
                         +-------------------------+
                         |         Vector          |
@@ -2461,9 +2517,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 44]
+Lehmann                   Expires 7 April 2025                 [Page 45]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          +======+=================+================================+
@@ -2517,9 +2573,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 45]
+Lehmann                   Expires 7 April 2025                 [Page 46]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          +------+-----------------+--------------------------------+
@@ -2573,9 +2629,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 46]
+Lehmann                   Expires 7 April 2025                 [Page 47]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
                           Table 9: Vector categories
@@ -2629,9 +2685,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 47]
+Lehmann                   Expires 7 April 2025                 [Page 48]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       Each identifier listed here MUST match the "Name" attribute for
@@ -2685,9 +2741,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 48]
+Lehmann                   Expires 7 April 2025                 [Page 49]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       The values in this list are computed by taking the raw value of
@@ -2741,9 +2797,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 49]
+Lehmann                   Expires 7 April 2025                 [Page 50]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
       *  "json": The content refers to a JSON object which has been
@@ -2797,9 +2853,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 50]
+Lehmann                   Expires 7 April 2025                 [Page 51]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    *  Lists from the IDMEF data model are represented as JSON arrays
@@ -2831,72 +2887,69 @@ Internet-Draft                   IDMEFv2                      April 2024
 
    *  NA: Not Applicable
 
-          +===============+=================+=====+=====+=======+
-          | Attributes    | Type            | Phy | Cyb | Avail |
-          +===============+=================+=====+=====+=======+
-          | Alert         |                 |     |     |       |
-          +===============+=================+=====+=====+=======+
-          | Version       | String          | R   | R   | R     |
-          +---------------+-----------------+-----+-----+-------+
-          | ID            | UUID            | R   | R   | R     |
-          +---------------+-----------------+-----+-----+-------+
-          | Entity        | String          | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | Category      | Array of ENUM   | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
-          | Cause         | ENUM            | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
-          | Description   | String          | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
-          | Status        | ENUM            | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
+        +==================+=================+=====+=====+=======+
+        | Attributes       | Type            | Phy | Cyb | Avail |
+        +==================+=================+=====+=====+=======+
+        | Alert            |                 |     |     |       |
+        +==================+=================+=====+=====+=======+
+        | Version          | String          | R   | R   | R     |
+        +------------------+-----------------+-----+-----+-------+
+        | ID               | UUID            | R   | R   | R     |
+        +------------------+-----------------+-----+-----+-------+
+        | OrganisationName | String          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | OrganisationID   | String          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | EntityName       | String          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | EntityID         | String          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | Category         | Array of ENUM   | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 51]
+Lehmann                   Expires 7 April 2025                 [Page 52]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
-          | Priority      | ENUM            | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
-          | Confidence    | Number          | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | Note          | String          | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | CreateTime    | Timestamp       | R   | R   | R     |
-          +---------------+-----------------+-----+-----+-------+
-          | StartTime     | Timestamp       | r   | r   | r     |
-          +---------------+-----------------+-----+-----+-------+
-          | CeaseTime     | Timestamp       | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | DeleteTime    | Timestamp       | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | AltNames      | Array of String | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | AltCategory   | Array of String | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | Ref           | Array of URI    | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | CorrelID      | Array of UUID   | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | AggrCondition | Array of String | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | PredID        | Array of UUID   | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
-          | RelID         | Array of UUID   | o   | o   | o     |
-          +---------------+-----------------+-----+-----+-------+
+        | Cause            | ENUM            | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
+        | Description      | String          | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
+        | Status           | ENUM            | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
+        | Priority         | ENUM            | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
+        | Confidence       | Number          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | Note             | String          | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | CreateTime       | Timestamp       | R   | R   | R     |
+        +------------------+-----------------+-----+-----+-------+
+        | StartTime        | Timestamp       | r   | r   | r     |
+        +------------------+-----------------+-----+-----+-------+
+        | CeaseTime        | Timestamp       | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | DeleteTime       | Timestamp       | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | AltNames         | Array of String | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | AltCategory      | Array of String | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | Ref              | Array of URI    | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | CorrelID         | Array of UUID   | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | AggrCondition    | Array of String | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | PredID           | Array of UUID   | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
+        | RelID            | Array of UUID   | o   | o   | o     |
+        +------------------+-----------------+-----+-----+-------+
 
-                  Table 10: Attributes completness - Alert
-
-
-
-
-
-
-
-
-
+                 Table 10: Attributes completness - Alert
 
 
 
@@ -2909,9 +2962,12 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 52]
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 53]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
             +=============+===============+=====+=====+=======+
@@ -2965,9 +3021,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 53]
+Lehmann                   Expires 7 April 2025                 [Page 54]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
            +=============+================+=====+=====+=======+
@@ -3021,9 +3077,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 54]
+Lehmann                   Expires 7 April 2025                 [Page 55]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        +=============+=========================+=====+=====+=======+
@@ -3077,9 +3133,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 55]
+Lehmann                   Expires 7 April 2025                 [Page 56]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        +=============+=========================+=====+=====+=======+
@@ -3133,9 +3189,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 56]
+Lehmann                   Expires 7 April 2025                 [Page 57]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
        +=============+=========================+=====+=====+=======+
@@ -3189,9 +3245,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 57]
+Lehmann                   Expires 7 April 2025                 [Page 58]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          +=================+=================+=====+=====+=======+
@@ -3245,9 +3301,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 58]
+Lehmann                   Expires 7 April 2025                 [Page 59]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    This suggests that the systems used to collect, transmit, process,
@@ -3301,9 +3357,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 59]
+Lehmann                   Expires 7 April 2025                 [Page 60]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    The registries to be created are named in the "Registry Name" column
@@ -3346,20 +3402,20 @@ Internet-Draft                   IDMEFv2                      April 2024
    The following groups and individuals contributed to the creation of
    this document and should be recognized for their efforts.
 
-   *  The former Prelude SIEM team : Thomas Andrejak & François Poirotte
+   *  The former Prelude SIEM team : Thomas Andrejak & Francois Poirotte
       (Co-authors of the first version of this document), Antoine Luong,
       Song Tran, Selim Menouar and Camille Gardet
 
    *  The core members of the SECEF (SECurity Exchange Format)
       consortium : Herve Debar (Author of RFC 4765 - IDMEFv1), Guillaume
-      Hiet and François Dechelle
+      Hiet and Francois Dechelle
 
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 60]
+Lehmann                   Expires 7 April 2025                 [Page 61]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    *  The H2020 7SHIELD project (Safety and Security Standards of Space
@@ -3413,9 +3469,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 61]
+Lehmann                   Expires 7 April 2025                 [Page 62]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
@@ -3446,10 +3502,10 @@ Internet-Draft                   IDMEFv2                      April 2024
               <https://www.unicode.org/versions/Unicode14.0.0/>.
 
    [ENISA-RIST]
-              ENISA, "Reference Incident Classification Taxonomy", 26
-              January 2018, <https://github.com/enisaeu/Reference-
-              Security-Incident-Taxonomy-Task-
-              Force/blob/master/working_copy/humanv1.md>.
+              European Union Agency for Cybersecurity, "Reference
+              Incident Classification Taxonomy", 26 January 2018,
+              <https://github.com/enisaeu/Reference-Security-Incident-
+              Taxonomy-Task-Force/blob/master/working_copy/humanv1.md>.
 
    [IANA_media_types]
               IANA, "Media Types",
@@ -3461,18 +3517,20 @@ Internet-Draft                   IDMEFv2                      April 2024
               names>.
 
    [UN-LOCODE]
-              UNECE, "UN/LOCODE Code List by Country and Territory", 6
-              July 2021, <https://unece.org/trade/cefact/unlocode-code-
-              list-country-and-territory>.
+              United Nations Economic Commission for Europe, "UN/LOCODE
+              Code List by Country and Territory", 6 July 2021,
+              <https://unece.org/trade/cefact/unlocode-code-list-
+              country-and-territory>.
+
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 63]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
 
 9.2.  Informative References
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 62]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
 
    [RFC4765]  Debar, H., Curry, D., and B. Feinstein, "The Intrusion
               Detection Message Exchange Format (IDMEF)", RFC 4765,
@@ -3523,11 +3581,9 @@ A.1.  Physical intrusion
 
 
 
-
-
-Lehmann                  Expires 9 October 2024                [Page 63]
+Lehmann                   Expires 7 April 2025                 [Page 64]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    {
@@ -3581,9 +3637,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 64]
+Lehmann                   Expires 7 April 2025                 [Page 65]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          "Name": "John Doe",
@@ -3637,9 +3693,9 @@ A.2.  Cyberattack
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 65]
+Lehmann                   Expires 7 April 2025                 [Page 66]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          "LOG"
@@ -3693,9 +3749,9 @@ A.3.  Server outage
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 66]
+Lehmann                   Expires 7 April 2025                 [Page 67]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    {
@@ -3749,9 +3805,9 @@ A.4.  Combined incident
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 67]
+Lehmann                   Expires 7 April 2025                 [Page 68]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
    {
@@ -3805,9 +3861,9 @@ Internet-Draft                   IDMEFv2                      April 2024
 
 
 
-Lehmann                  Expires 9 October 2024                [Page 68]
+Lehmann                   Expires 7 April 2025                 [Page 69]
 
-Internet-Draft                   IDMEFv2                      April 2024
+Internet-Draft                   IDMEFv2                    October 2024
 
 
          "Size": "Medium"
@@ -3838,34 +3894,46 @@ Appendix B.  JSON Validation Schema (Non-normative)
    constraints.
 
    {
-       "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V03)",
+       "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V04)",
        "properties": {
            "Version": {
                "description": "The version of the IDMEF format in use by this alert. During the drafts tuning period the version is equal to the draft version. Therefore it is \"2.D.V0X\" for Draft V0X.",
                "enum": [
-                   "2.D.V03"
+                   "2.D.V04"
                ]
            },
            "ID": {
                "description": "Unique identifier for the alert.",
                "$ref": "#/definitions/uuidType"
            },
-           "Entity": {
-               "description": "Tenant ID to support multi-tenancy (e.g. decentralized infrastructure, local agency, subsidiary company, etc.). Should be used when there are multiple sites/locations or multiple tenants (e.g. by Managed Security Services Providers).",
+           "OrganisationName": {
+               "description": "Corporate/Main Office Organisation Name Useful if alerts are sent to a multi-organisation incident detection system. Example: ACME Corporation",
+               "type": "string"
+           },
+           "OrganisationId": {
+               "description": "Corporate/Main Office Organisation ID. Where possible official organisation ID manage by national authority. Useful if alerts are sent to a multi-organisation incident detection system. This ID has to be chosen depending on the overall detection perimeter and the nature of the monitored organisation (Private/Public, Commercial, International, etc.) Examples: OrganisationId in France could be SIREN, in England could be CR, Germany could be Handelsregisternummer, Spain could be CIF, Italia could be Partita IVA, USA could be EIN, etc. Commercial OrganisationId in Europe could be V.A.T ID",
+               "type": "string"
+           },
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 70]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
+           "EntityName": {
+               "description": "Entity Name, monitored by the organisation, where the incident occurred. Could be a town, region or country name or an internal name. Could also be the name of a client for a MSSP centralizing it's client incidents in a single system. Do not repeat the organisation name in the EntityName Example : \n- ACME HeadQuaters is located in Paris France and has a local office in India\n- If the incident occurred in the local office : \"OrganisationName\" : \" ACME\" , \"EntityName\" : \"India\"\n- If the incident occurred in the headquaters : \"OrganisationName\" : \"ACME\", \"EntityName\" : \"Headquaters\" (or \"Paris\")",
+               "type": "string"
+           },
+           "EntityId": {
+               "description": "Entity ID, monitored by the organisation, where the incident occurred. Useful if organisation and entity are not directly linked, like a client and a MSSP.",
                "type": "string"
            },
            "Category": {
                "description": "The incident's category & subcategory as listed in using the format \"category.subcategory\" (e.g. \"Attempt.Exploit\").",
                "type": "array",
                "items": {
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 69]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "$ref": "#/definitions/categoryEnum"
                }
            },
@@ -3902,6 +3970,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                "$ref": "#/definitions/timestampType"
            },
            "StartTime": {
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 71]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                "description": "Timestamp indicating the deduced start of the event. StartTime can be later than CreateTime in case or Alerts created from forecast information (e.g. Snow Storm in two days staring at 10h00)",
                "$ref": "#/definitions/timestampType"
            },
@@ -3914,14 +3990,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                "type": "array",
                "items": {
                    "type": "string"
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 70]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                }
            },
            "AltCategory": {
@@ -3958,6 +4026,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                "type": "array",
                "items": {
                    "$ref": "#/definitions/uuidType"
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 72]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                }
            },
            "RelID": {
@@ -3970,14 +4046,6 @@ Internet-Draft                   IDMEFv2                      April 2024
            "Analyzer": {
                "type": "object",
                "items": {
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 71]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "description": "The Analyzer class describes the module that has analyzed the data captured by the sensors, identified an event of interest and decided to create an alert.",
                    "properties": {
                        "IP": {
@@ -4014,6 +4082,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "description": "A means by which to extend the Category attribute. (see )",
                            "type": "string"
                        },
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 73]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                        "Data": {
                            "description": "Type of data analyzed during the detection.",
                            "type": "array",
@@ -4026,14 +4102,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "type": "string"
                        },
                        "Method": {
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 72]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                            "description": "Detection method.",
                            "type": "array",
                            "items": {
@@ -4070,6 +4138,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                "items": {
                    "description": "The Sensor class describes the module that captured the data before sending it to an analyzer. The Sensor may be a subpart of the Analyzer.",
                    "properties": {
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 74]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                        "IP": {
                            "description": "The sensor's IP address.",
                            "$ref": "#/definitions/ipType"
@@ -4082,14 +4158,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "description": "The sensor's hostname. This SHOULD be a fully qualified domain name, but may not conform exactly because values extracted from logs, messages, DNS, etc. may themselves be malformed. An empty string MAY be used to explicitly state that this value was inquired but not found (missing DNS entry).",
                            "type": "string"
                        },
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 73]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                        "Model": {
                            "description": "The sensor model's description (usually its generic name, brand and version).",
                            "type": "string"
@@ -4126,6 +4194,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "properties": {
                        "IP": {
                            "description": "Source IP address.",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 75]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                            "$ref": "#/definitions/ipType"
                        },
                        "Hostname": {
@@ -4138,14 +4214,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                        },
                        "TI": {
                            "description": "Threat Intelligence data about the source. Values in this list MUST use the format \"attribute:origin\", where \"attribute\" refers to the attribute inside this source found inside a Threat Intelligence database, and \"origin\" contains a short identifier for the Threat Intelligence database. E.g. \"IP:Dshield\". Please note that the same attribute may appear multiple times inside the list (because a match was found in multiple Threat Intelligence databases).",
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 74]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                            "type": "array",
                            "items": {
                                "type": "string"
@@ -4182,6 +4250,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "description": "Standard UN/Locode for the source.",
                            "$ref": "#/definitions/unlocodeType"
                        },
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 76]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                        "Location": {
                            "description": "Internal name for the location of the source.",
                            "type": "string"
@@ -4194,14 +4270,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                            }
                        }
                    },
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 75]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "additionalProperties": false,
                    "type": "object"
                }
@@ -4238,6 +4306,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                        },
                        "Port": {
                            "description": "Target ports involved in the alert. Values in this list MUST be integers and MUST be in the range 1-65535.",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 77]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                            "type": "array",
                            "items": {
                                "type": "integer"
@@ -4250,14 +4326,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                        "UnLocation": {
                            "description": "Standard UN/Locode for the target.",
                            "$ref": "#/definitions/unlocodeType"
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 76]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                        },
                        "Location": {
                            "description": "Internal name for the location of the target.",
@@ -4294,6 +4362,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                        "Name": {
                            "description": "Name of the detected vector or \"Unknown\". Please note that this name does not need to be unique across vectors.",
                            "type": "string"
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 78]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                        },
                        "Note": {
                            "description": "Free text human-readable additional note for this vector.",
@@ -4306,14 +4382,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                                "type": "string"
                            }
                        },
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 77]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                        "GeoLocation": {
                            "description": "GPS coordinates for the vector.",
                            "$ref": "#/definitions/geolocType"
@@ -4350,6 +4418,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                "items": {
                    "description": "The Attachment class contains additional data which was captured in relation with the event.",
                    "properties": {
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 79]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                        "Name": {
                            "description": "A unique identifier among attachments that can be used to reference this attachment from other classes using the \"Attachment\" attribute.",
                            "$ref": "#/definitions/attachmentNameType"
@@ -4362,14 +4438,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "description": "A list of hash results for the attachment's Content. The values in this list are computed by taking the raw value of the attachment's \"Content\" attribute. The hash result is computed before any other transformation (e.g. Base64 encoding) is applied to the content, so that a receiving IDMEF system may reverse the transformation, apply the same hashing function and obtain the same hash result. See also the definition for the \"ContentEncoding\" attribute below. It is RECOMMENDED that compatible implementations use one of the hashing functions from the SHA-2 or SHA-3 families to compute the hash results in this list.",
                            "type": "array",
                            "items": {
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 78]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                                "$ref": "#/definitions/hashType"
                            }
                        },
@@ -4406,6 +4474,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                            "type": "string"
                        },
                        "Content": {
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 80]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                            "description": "The attachment's content, in case it is directly embedded inside the message. For large attachments, it is RECOMMENDED that implementations make use of the \"ExternalURI\" attribute to refererence a copy of the content saved in an external storage mechanism.",
                            "type": "string"
                        }
@@ -4418,14 +4494,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                }
            }
        },
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 79]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
        "additionalProperties": false,
        "type": "object",
        "required": [
@@ -4462,6 +4530,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Availability.Sabotage",
                    "Availability.Outage",
                    "Availability.Failure",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 81]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                    "Information. UnauthorizedAccess",
                    "Information. UnauthorizedModification",
                    "Information.DataLoss",
@@ -4474,14 +4550,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Vulnerable.DDoS",
                    "Vulnerable.Surface",
                    "Vulnerable.Disclosure",
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 80]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "Vulnerable.System",
                    "Geophysical.Earthquake",
                    "Geophysical.MassMovement",
@@ -4518,6 +4586,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                ],
                "description": "Possible alert cause"
            },
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 82]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
            "statusEnum": {
                "enum": [
                    "Event",
@@ -4530,14 +4606,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Unknown",
                    "Info",
                    "Low",
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 81]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "Medium",
                    "High"
                ],
@@ -4574,6 +4642,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "AV",
                    "EDR",
                    "FW",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 83]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                    "NIDS",
                    "HIDS",
                    "WIDS",
@@ -4586,14 +4662,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "ETL",
                    "RASP",
                    "BAST",
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 82]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "NAC",
                    "SIEM",
                    "NMS",
@@ -4630,6 +4698,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Flow",
                    "Log",
                    "Protocol",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 84]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                    "Host",
                    "Network",
                    "Alert",
@@ -4642,14 +4718,6 @@ Internet-Draft                   IDMEFv2                      April 2024
            },
            "analyzerMethodEnum": {
                "enum": [
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 83]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "Biometric",
                    "Policy",
                    "Heat",
@@ -4686,6 +4754,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Wind",
                    "Snow",
                    "Rain",
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 85]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
                    "Chemical",
                    "Smoke",
                    "Vapors",
@@ -4698,14 +4774,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                    "Bird",
                    "Storm",
                    "HighTemperature",
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 84]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                    "Artifact",
                    "Autonomous System",
                    "Directory",
@@ -4742,6 +4810,14 @@ Internet-Draft                   IDMEFv2                      April 2024
                "description": "A JSON string containing a timestamp conforming to the format given in section 5.6 of RFC 3339.",
                "type": "string",
                "pattern": "^[0-9]{4}-(0[0-9]|1[012])-([0-2][0-9]|3[01])T([0-1][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|[-+]([0-1][0-9]|2[0-3]):[0-5][0-9])?$"
+
+
+
+Lehmann                   Expires 7 April 2025                 [Page 86]
+
+Internet-Draft                   IDMEFv2                    October 2024
+
+
            },
            "geolocType": {
                "description": "Geolocation coordinates. The format for this type matches the definition for locations inside ISO 6709 (eg. \"+48.75726, +2.299528, +65.1\").",
@@ -4754,14 +4830,6 @@ Internet-Draft                   IDMEFv2                      April 2024
                "pattern": "^[A-Z]{2} ?[A-Z]{3}$"
            },
            "ipType": {
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 85]
-
-Internet-Draft                   IDMEFv2                      April 2024
-
-
                "description": "An Internet Protocol address, either version 4 or version 6.",
                "type": "string",
                "pattern": "^(((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$"
@@ -4788,7 +4856,7 @@ Internet-Draft                   IDMEFv2                      April 2024
            }
        },
        "$schema": "http://json-schema.org/draft-04/schema#",
-       "title": "IDMEF 2.D.V03"
+       "title": "IDMEF 2.D.V04"
    }
 
 Author's Address
@@ -4796,21 +4864,9 @@ Author's Address
    Gilles Lehmann
    Telecom SudParis
    France
+
    Email: gilles.lehmann@telecom-sudparis.eu
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Lehmann                  Expires 9 October 2024                [Page 86]
+Lehmann                   Expires 7 April 2025                 [Page 87]

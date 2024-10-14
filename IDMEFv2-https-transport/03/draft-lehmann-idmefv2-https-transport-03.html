@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Transport of Incident Detection Message Exchange Format version 2 (IDMEFv2) Messages over HTTPS</title><script>
+function getMeta(docname, revision, container) {
+  var xhr = new XMLHttpRequest();
+  var datatracker = "https://datatracker.ietf.org/doc/" + docname;
+  xhr.open("GET", datatracker + "/doc.json", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var data = JSON.parse(xhr.response);
+        
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }
+
+        if (data.rev) {
+          cont.style.display = "block";
+          var bld = newElementWithText("b", "Internet Draft Status");
+          cont.appendChild(bld);
+          cont.appendChild(newElement("br"));
+          if (data.state == "RFC") {
+            var txt = newElementWithText("i", "This document has been published as RFC - please see ");
+            cont.appendChild(txt);
+            var link = newElement("a");
+            link.setAttribute("href", datatracker);
+            link.appendChild(newText("IETF Datatracker"));
+            cont.appendChild(link);
+            txt = newElementWithText("i", " for details.");
+            cont.appendChild(txt);
+          } else if (data.rev == revision) {
+            var rev = newElementWithText("i", "This is the latest submitted version.");
+            cont.appendChild(rev);
+          } else {
+            var rev = newElementWithText("i", "This is not the current version:");
+            cont.appendChild(rev);
+            cont.appendChild(newElement("br"));
+            var dat = "";
+            if (data.time) {
+              dat = ", submitted on " + data.time.substring(0,10);
+            }
+            rev = newElementWithText("i", "please see version " + data.rev + dat + ".");
+            cont.appendChild(rev);
+          }
+        }
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+</script><script>
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          var postfix = fragid.substring(2);
+          if (postfix.startsWith("abstract")) {
+            window.location.hash = prefix + postfix;
+          } else if (postfix.startsWith("note-")) {
+            window.location.hash = prefix + "note." + postfix.substring(5);
+          } else {
+            window.location.hash = prefix + "section." + postfix;
+          }
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style title="rfc2629.xslt">
+:root {
+  --col-bg: white;
+  --col-bg-error: red;
+  --col-bg-highlight: yellow;
+  --col-bg-highligh2: lime;
+  --col-bg-light: gray;
+  --col-bg-pre: lightyellow;
+  --col-bg-pre1: #f8f8f8;
+  --col-bg-pre2: #f0f0f0;
+  --col-bg-th: #e9e9e9;
+  --col-bg-tr: #f5f5f5;
+  --col-fg: black;
+  --col-fg-del: red;
+  --col-fg-error: red;
+  --col-fg-ins: green;
+  --col-fg-light: gray;
+  --col-fg-link: blue;
+  --col-fg-title: green;
+}
+a {
+  color: var(--col-fg-link);
+  text-decoration: none;
+}
+a.smpl {
+  color: var(--col-fg);
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  background-color: var(--col-bg);
+  color: var(--col-fg);
+  font-family: cambria, georgia, serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px 0px 10px 10px;
+}
+@media screen and (min-width: 1040px) {
+  body {
+    margin: 10px auto;
+    max-width: 1000px;
+  }
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: var(--col-fg-title);
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  font-size: 100%;
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: var(--col-fg);
+}
+img {
+  margin-left: 3em;
+}
+ol {
+  margin-left: 2em;
+}
+li ol {
+  margin-left: 0em;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 90%;
+  margin-left: 3em;
+  background-color: var(--col-bg-pre);
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: var(--col-bg-pre2);
+}
+pre.inline {
+  background-color: var(--col-bg);
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: var(--col-bg-pre1);
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: var(--col-bg-pre1);
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+div.tt {
+  margin-left: 2em;
+} 
+table.tt {
+  border-collapse: collapse;
+  border-color: var(--col-fg-light);
+  border-spacing: 0; 
+  vertical-align: top;
+ }
+table.tt th {
+  border-color: var(--col-fg-light);
+  padding: 3px;
+}
+table.tt td {
+  border-color: var(--col-fg-light);
+  padding: 3px;
+}
+table.all {
+  border-style: solid;
+  border-width: 2px;
+}
+table.full {
+  border-style: solid;
+  border-width: 2px;
+}
+table.tt td {
+  vertical-align: top;
+}
+table.all td {
+  border-style: solid;
+  border-width: 1px;
+}
+table.full td {
+  border-style: none solid;
+  border-width: 1px;
+}
+table.tt th {
+  vertical-align: top;
+}
+table.all th {
+  border-style: solid;
+  border-width: 1px;
+}
+table.full th {
+  border-style: solid;
+  border-width: 1px 1px 2px 1px;
+}
+table.tleft {
+  margin-right: auto;
+}
+table.tright {
+  margin-left: auto;
+}
+table.tcenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+caption {
+  caption-side: bottom;
+  font-weight: bold;
+  font-size: 80%;
+  margin-top: .5em;
+}
+
+table.v3 tr {
+    vertical-align: top;
+}
+table.v3 th {
+  background-color: var(--col-bg-th);
+  vertical-align: top;
+  padding: 0.25em 0.5em;
+}
+table.v3 td {
+  padding: 0.25em 0.5em;
+}
+table.v3 tr:nth-child(2n) > td {
+  background-color: var(--col-bg-tr);
+  vertical-align: top;
+}
+tr p {
+  margin-left: 0em;
+}
+tr pre {
+  margin-left: 1em;
+}
+tr ol {
+  margin-left: 1em;
+}
+tr ul {
+  margin-left: 1em;
+}
+tr dl {
+  margin-left: 1em;
+}
+
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 90%;
+  color: var(--col-bg);
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  vertical-align: top;
+  background-color: var(--col-bg-light);
+  width: 50%;
+}
+table.header a {
+  color: var(--col-bg);
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 90%;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0%;
+}
+ul {
+  margin-left: 2em;
+}
+li ul {
+  margin-left: 0em;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+
+.comment {
+  background-color: var(--col-bg-highlight);
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: var(--col-fg-error);
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 80%;
+}
+.filename {
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: var(--col-bg-highlight);
+}
+.docstatus {
+  border: 1px solid var(--col-fg);
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+  -webkit-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@media screen {
+  pre.text, pre.text2, pre.drawing {
+    width: 69ch;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  font-family: cambria, georgia, serif;
+  @top-left {
+       content: "Internet-Draft";
+  }
+  @top-right {
+       content: "October 2024";
+  }
+  @top-center {
+       content: "IDMEFv2 - HTTPS Transport";
+  }
+  @bottom-left {
+       content: "";
+  }
+  @bottom-center {
+       content: "Expires April 17, 2025";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Author" href="#rfc.authors"><link rel="License" href="#rfc.copyrightnotice"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Terminology" href="#rfc.section.2"><link rel="Chapter" title="3 Normative sections" href="#rfc.section.3"><link rel="Chapter" title="4 Transmission of IDMEFv2 Messages over HTTPS" href="#rfc.section.4"><link rel="Chapter" title="5 The JavaScript Object Notation Serialization Method" href="#rfc.section.5"><link rel="Chapter" title="6 Security Considerations" href="#rfc.section.6"><link rel="Chapter" title="7 IANA Considerations" href="#rfc.section.7"><link rel="Chapter" title="8 Acknowledgement" href="#rfc.section.8"><link rel="Chapter" title="9 References" href="#rfc.section.9"><link rel="Appendix" title="A HTTP Result Codes" href="#rfc.section.A"><link rel="Appendix" title="B Transmission examples" href="#rfc.section.B"><meta name="viewport" content="initial-scale=1"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.1390, 2021/04/22 08:40:27, XSLT vendor: libxslt http://xmlsoft.org/XSLT/"><meta name="keywords" content="RFC4765, IDMEF"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Lehmann, G."><meta name="dcterms.identifier" content="urn:ietf:id:draft-lehmann-idmefv2-https-transport-03"><meta name="dcterms.issued" content="2024-10-14"><meta name="dct.replaces" content="urn:ietf:rfc:4767"><meta name="dcterms.abstract" content="The Incident Detection Message Exchange Format version 2 (IDMEFv2) defines a data representation for security incidents detected on cyber and/or physical infrastructures.The format is agnostic so it can be used in standalone or combined cyber (SIEM), physical (PSIM) and availability (NMS) monitoring systems. IDMEFv2 can also be used to represent man made or natural hazards threats.IDMEFv2 improves situational awareness by facilitating correlation of multiple types of events using the same base format thus enabling efficient detection of complex and combined cyber and physical attacks and incidents.This document defines a way to transport IDMEFv2 Alerts over HTTPs.If approved this document would obsolete RFC4767."><meta name="description" content="The Incident Detection Message Exchange Format version 2 (IDMEFv2) defines a data representation for security incidents detected on cyber and/or physical infrastructures.The format is agnostic so it can be used in standalone or combined cyber (SIEM), physical (PSIM) and availability (NMS) monitoring systems. IDMEFv2 can also be used to represent man made or natural hazards threats.IDMEFv2 improves situational awareness by facilitating correlation of multiple types of events using the same base format thus enabling efficient detection of complex and combined cyber and physical attacks and incidents.This document defines a way to transport IDMEFv2 Alerts over HTTPs.If approved this document would obsolete RFC4767."></head><body onload='getMeta("draft-lehmann-idmefv2-https-transport","03","rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">G. Lehmann</td></tr><tr><td class="left">Internet-Draft</td><td class="right">Telecom Sud Paris</td></tr><tr><td class="left">Obsoletes: <a href="https://www.rfc-editor.org/rfc/rfc4767.html">4767</a> (if approved)</td><td class="right">October 14, 2024</td></tr><tr><td class="left">Intended status: Standards Track</td><td class="right"></td></tr><tr><td class="left">Expires: April 17, 2025</td><td class="right"></td></tr></tbody></table><div id="rfc.title"><h1>Transport of Incident Detection Message Exchange Format version 2 (IDMEFv2) Messages over HTTPS</h1><div class="filename"><a href="https://datatracker.ietf.org/doc/draft-lehmann-idmefv2-https-transport" class="smpl">draft-lehmann-idmefv2-https-transport</a>-<a href="https://tools.ietf.org/html/draft-lehmann-idmefv2-https-transport-03" class="smpl">03</a></div></div></header><section><h2 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h2><div id="rfc.abstract.p.1"><p>The Incident Detection Message Exchange Format version 2 (IDMEFv2) defines a data representation for security incidents detected on cyber and/or physical infrastructures.</p></div><div id="rfc.abstract.p.2"><p>The format is agnostic so it can be used in standalone or combined cyber (SIEM), physical (PSIM) and availability (NMS) monitoring systems. IDMEFv2 can also be used to represent man made or natural hazards threats.</p></div><div id="rfc.abstract.p.3"><p>IDMEFv2 improves situational awareness by facilitating correlation of multiple types of events using the same base format thus enabling efficient detection of complex and combined cyber and physical attacks and incidents.</p></div><div id="rfc.abstract.p.4"><p>This document defines a way to transport IDMEFv2 Alerts over HTTPs.</p></div><div id="rfc.abstract.p.5"><p>If approved this document would obsolete RFC4767.</p></div></section><aside id="rfc.meta" class="docstatus"></aside><section id="rfc.status"><h2><a href="#rfc.status">Status of this Memo</a></h2><div id="rfc.boilerplate.1.p.1"><p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p></div><div id="rfc.boilerplate.1.p.2"><p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF). Note that other groups may also distribute working documents as Internet-Drafts. The list of current Internet-Drafts is at <a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a>.</p></div><div id="rfc.boilerplate.1.p.3"><p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time. It is inappropriate to use Internet-Drafts as reference material or to cite them other than as “work in progress”.</p></div><div id="rfc.boilerplate.1.p.4"><p>This Internet-Draft will expire on April 17, 2025.</p></div></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><div id="rfc.boilerplate.2.p.1"><p>Copyright (c) 2024 IETF Trust and the persons identified as the document authors. All rights reserved.</p></div><div id="rfc.boilerplate.2.p.2"><p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (<a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a>) in effect on the date of publication of this document. Please review these documents carefully, as they describe your rights and restrictions with respect to this document. Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p></div></section><hr class="noprint"><section id="n-introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a> <a href="#n-introduction">Introduction</a></h2><div id="rfc.section.1.p.1"><p><a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> defines a model for the purpose of describing security alerts and incidents as IDMEF version 2 (IDMEFv2) messages. It also defines serialization methods so that IDMEFv2 messages can be shared between IDMEFv2 Analyser detecting incidents and IDMEFv2 Manager, the management systems that may need to interact with them.</p></div><section id="n-about-the-transmission-protocol"><h3 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#n-about-the-transmission-protocol">About the transmission protocol</a></h3><div id="rfc.section.1.1.p.1"><p>IDMEFv2 defines a message format, not a protocol, as the sharing of messages is assumed to be out of scope in order to allow Analyzers and Managers to exchange and store alerts in a way most suited to their established incident-detection processes. However, a protocol specification is required so that actual exchanges can take place between the involved programs. Defining a common protocol also ensures interoperability between otherwise concurrent implementations.</p></div><div id="rfc.section.1.1.p.2"><p>This document specifies the transport of IDMEFv2 messages within <a href="#RFC9112"><cite title="HTTP/1.1">[RFC9112]</cite></a> or <a href="#RFC9113"><cite title="HTTP/2">[RFC9113]</cite></a> Request and Response messages over Transport Layer Security, a.k.a. <a href="#RFC9110"><cite title="HTTP Semantics">[RFC9110]</cite></a>.</p></div><div id="rfc.section.1.1.p.3"><p>This document describes a serialization method for IDMEF messages based on the <a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a>.</p></div></section></section><hr class="noprint"><section id="n-terminology"><h2 id="rfc.section.2" class="np"><a href="#rfc.section.2">2.</a> <a href="#n-terminology">Terminology</a></h2><div id="rfc.section.2.p.1"><p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.</p></div></section><hr class="noprint"><section id="n-normative-sections"><h2 id="rfc.section.3" class="np"><a href="#rfc.section.3">3.</a> <a href="#n-normative-sections">Normative sections</a></h2><div id="rfc.section.3.p.1" class="avoidbreakafter"><p>Implementations of IDMEFv2 willing to exchange messages with other implementations are REQUIRED to fully implement:</p></div><div id="rfc.section.3.p.2"><ul><li><div><p>The transmission protocol defined in <a href="#protocol" title="Transmission of IDMEFv2 Messages over HTTPS">Section 4</a></p></div> </li><li><div><p>The JavaScript Object Notation (JSON) serialization method defined in <a href="#serialization_json" title="The JavaScript Object Notation Serialization Method">Section 5</a></p></div> </li></ul></div></section><hr class="noprint"><section id="protocol"><h2 id="rfc.section.4" class="np"><a href="#rfc.section.4">4.</a> <a href="#protocol">Transmission of IDMEFv2 Messages over HTTPS</a></h2><div id="rfc.section.4.p.1"><p>This section specifies the details of the transport of IDMEFv2 messages <a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> over HTTPS.</p></div><div id="rfc.section.4.p.2"><p><a href="#BCP56">[BCP56]</a> contains a number of important considerations when using HTTP for application protocols. These include the size of the payload for the application, whether the application will use a web browser, whether the protocol should be defined on a port other than the well-known port for HTTP/HTTPS, and if the security provided through HTTPS suits the needs of the new application.</p></div><div id="rfc.section.4.p.3"><p>It is acknowledged within the scope of these concerns that HTTPS is not ideally suited for IDMEFv2 transport, as the former is a client-server protocol and the latter a message-exchange protocol; however, the ease of implementation over HTTPS outweighs these concerns.</p></div><section id="n-architecture-overview"><h3 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#n-architecture-overview">Architecture overview</a></h3><div id="rfc.section.4.1.p.1"><p>In the context of this document, it is expected that IDMEFv2 Analyzers will act as HTTP clients, while IDMEFv2 Managers act as HTTP servers.</p></div><div id="rfc.section.4.1.p.2"><p>However, due to external constraints, implementation-specific design decisions, etc. these roles may sometimes be switched around. This can be especially true when dealing with segmented networks such as demilitarized zones, where the Analyzer may be unable to contact its Manager, or for communications which do not rely on an Analyzer sending IDMEFv2 messages to a Manager (e.g. for Manager-to-Manager communications). Such specific cases are outside the scope of this specification.</p></div></section><section id="n-listening-port"><h3 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#n-listening-port">Listening port</a></h3><div id="rfc.section.4.2.p.1"><p>Consistent with <a href="#BCP56">[BCP56]</a>, compatible system participating in a consortium and hosting a server for the purpose of receiving IDMEFv2 message using this specification SHOULD listen for TCP connections on port 12345 (see in <a href="#iana" title="IANA Considerations">Section 7</a> for more information).</p></div><div id="rfc.section.4.2.p.2"><p>The systems MAY be configurable so as to allow listening on ports other than the well-known port; this configuration is out of scope for this specification.</p></div></section><section id="n-compatibility-with-http-s-"><h3 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#n-compatibility-with-http-s-">Compatibility with HTTP(S)</a></h3><div id="rfc.section.4.3.p.1"><p>The implementations MUST implement all REQUIRED functionality for <a href="#RFC9112"><cite title="HTTP/1.1">[RFC9112]</cite></a>. The implementations SHOULD implement all REQUIRED functionality for <a href="#RFC9113"><cite title="HTTP/2">[RFC9113]</cite></a> in a TLS context. In particular, the implementations SHOULD support HTTP/2 protocol negociation using the <a href="#RFC7301"><cite title="Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension">[RFC7301]</cite></a> as defined in <a href="#RFC9113"><cite title="HTTP/2">[RFC9113]</cite></a> ch 3.3. The "h2c" protocol (HTTP/2.0 over cleartext) MUST NOT be used. HTTP over TLS (also known as HTTPS) is specified in <a href="#RFC9110"><cite title="HTTP Semantics">[RFC9110]</cite></a> ch 2.</p></div><div id="rfc.section.4.3.p.2"><p>Each IDMEFv2 message MUST be sent as a separate HTTP Request. However, an implementation MAY send multiple HTTP Requests in parallel to achieve higher message throughput. This can be done by creating a separate connection to the HTTP server for each request, or by using any multiplexing mechanism provided by the underlying protocol (see for example <a href="#RFC9113"><cite title="HTTP/2">[RFC9113]</cite></a> ch 5).</p></div><div id="rfc.section.4.3.p.3"><p>All IDMEFv2 messages sent in HTTP Requests MUST be sent using the POST method. In addition, the Request-URI of such requests SHOULD be set to '/' for interoperability, but an implementation MUST also be able to handle alternative paths to cope with situations where URI rewriting may be used (e.g. by a reverse proxy server).</p></div><div id="rfc.section.4.3.p.4"><p>As IDMEFv2 messages MUST be sent using the POST method, a compatible implementation SHOULD answer with an appropriate HTTP code (405 Method Not Allowed) to requests made using any other method.</p></div><div id="rfc.section.4.3.p.5"><p>If a request is made to a Request-URI other than the one dedicated to the processing of IDMEFv2 messages, the server SHOULD return an appropriate HTTP code (e.g. 404 Not Found).</p></div><div id="rfc.section.4.3.p.6"><p>The HTTP Request's body MUST be set to the serialized form of the IDMEFv2 message. Since an IDMEFv2 message can be serialized in a variety of ways, the 'Content-Type' Request header <a href="#RFC2045"><cite title="Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies">[RFC2045]</cite></a> MUST be set to a media type <a href="#RFC2046"><cite title="Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types">[RFC2046]</cite></a> that reflects the mechanism used to perform the serialization. If the server does not support the media type sent by the client, it SHOULD respond with an appropriate HTTP code (415 Unsupported Media Type).</p></div><div id="rfc.section.4.3.p.7"><p>A conforming IDMEFv2 system acting as an HTTP server MUST support content negotiation based on the value of the 'Accept' Request header sent by the client. If the client does not advertise supported media types (i.e. omits the 'Accept' header), the server MUST default to 'application/json' and use the format defined in <a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> to build the HTTP response. If the server does not support any of the media types advertised by the client, it SHOULD respond with an appropriate HTTP code (406 Not Acceptable).</p></div><div id="rfc.section.4.3.p.8"><p>If the Response does not contain a body, the appropriate HTTP code SHOULD be returned to the client (204 No Content). In this case, the 'Content-Type' header can be omitted from the HTTP Response entirely.</p></div><div id="rfc.section.4.3.p.9"><p>To improve compatibility between implementations, it is RECOMMENDED that all IDMEFv2 systems conforming to this document support the JSON serialization format defined in <a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a>, with a media type set to 'application/json'.</p></div><div id="rfc.section.4.3.p.10"><p>If an IDMEFv2 system receives an improper IDMEFv2 message in an HTTP Request, it MUST return an appropriate 4xx Client Error result code to the requesting system (e.g. 400 Bad Request).</p></div><div id="rfc.section.4.3.p.11"><p>The HTTP code serves as an acknowledgment of the message. The receiving IDMEFv2 system SHOULD NOT confirm acceptance of a message (2xx) unless it managed to safely deal with it, e.g. by saving the message to disk / in a database, or by relaying it to another system that successfully acknowledged it for further processing.</p></div><div id="rfc.section.4.3.p.12"><p>If an IDMEFv2 implementation cannot process an IDMEFv2 message received in an HTTP Request due to an error on its own side, it MUST return an appropriate 5xx Server Error result code to the requesting system.</p></div><div id="rfc.section.4.3.p.13"><p>Note that HTTP provides no mechanism for signaling to a server that a Response body is not a valid IDMEFv2 response. If an IDMEFv2 system receives an improper HTTP Response, or cannot process an HTTP Response due to an error on its own side, it MUST log the error and present it to the IDMEFv2 system administrator for handling; the error logging format is considered an implementation detail and is out of scope for this specification.</p></div><div id="rfc.section.4.3.p.14"><p><a href="#appendix-http-codes" title="HTTP Result Codes">Appendix A</a> provides informative guidance on how to map various error conditions to an appropriate HTTP result code.</p></div><div id="rfc.section.4.3.p.15"><p>IDMEFv2 systems relying on HTTP/1.1 MUST support and SHOULD use HTTP/1.1 persistent connections as described in <a href="#RFC9112"><cite title="HTTP/1.1">[RFC9112]</cite></a>. IDMEFv2 systems MUST support chunked transfer encoding on the HTTP server side to allow the implementation of clients that do not need to pre-calculate message sizes before constructing HTTP headers.</p></div></section><section id="n-compatibility-with-dns"><h3 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#n-compatibility-with-dns">Compatibility with DNS</a></h3><div id="rfc.section.4.4.p.1"><p>The use of stable DNS names to address IDMEFv2 systems is RECOMMENDED; this facilitates connection to IDMEFv2 systems within a consortium. The protocol provides no in-band method for handling a change of address of an IDMEFv2 system.</p></div></section><section id="n-compatibility-with-tls"><h3 id="rfc.section.4.5"><a href="#rfc.section.4.5">4.5.</a> <a href="#n-compatibility-with-tls">Compatibility with TLS</a></h3><section id="n-acceptable-tls-versions"><h4 id="rfc.section.4.5.1"><a href="#rfc.section.4.5.1">4.5.1.</a> <a href="#n-acceptable-tls-versions">Acceptable TLS versions</a></h4><div id="rfc.section.4.5.1.p.1"><p>IDMEFv2 systems SHOULD use TLS version 1.3 <a href="#RFC8446"><cite title="The Transport Layer Security (TLS) Protocol Version 1.3">[RFC8446]</cite></a> or higher for confidentiality, identification, and authentication, when sending IDMEFv2 messages over HTTPS.</p></div><div id="rfc.section.4.5.1.p.2"><p>IDMEFv2 systems MUST NOT request, offer, or use any version of SSL, or any version of TLS prior to 1.3, due to known weaknesses in these protocols; see <a href="#RFC8446"><cite title="The Transport Layer Security (TLS) Protocol Version 1.3">[RFC8446]</cite></a> ch E for more information.</p></div></section><section id="n-acceptable-ciphersuites"><h4 id="rfc.section.4.5.2"><a href="#rfc.section.4.5.2">4.5.2.</a> <a href="#n-acceptable-ciphersuites">Acceptable ciphersuites</a></h4><div id="rfc.section.4.5.2.p.1"><p>The TLS session MUST use non-NULL ciphersuites for authentication, integrity, and confidentiality. IDMEFv2 systems MUST NOT use ciphersuites with known vulnerabilities and MUST use ciphersuites that provide Perfect Forward Secrecy to protect the messages' confidentiality in case a vulnerability is later discovered in the ciphersuites.</p></div><div id="rfc.section.4.5.2.p.2"><p>Administrators can find guidance regarding the selection of acceptable ciphersuites for TLS version 1.2 in <a href="#BCP195">[BCP195]</a>.</p></div></section><section id="n-authentication"><h4 id="rfc.section.4.5.3"><a href="#rfc.section.4.5.3">4.5.3.</a> <a href="#n-authentication">Authentication</a></h4><div id="rfc.section.4.5.3.p.1"><p>IDMEFv2 systems MUST use mutual authentication; that is, both IDMEFv2 systems acting as HTTPS clients and IDMEFv2 systems acting as HTTPS servers MUST be identified by an X.509 certificate <a href="#RFC5280"><cite title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</cite></a>. Mutual authentication requires full path validation on each certificate, as defined in <a href="#RFC5280"><cite title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</cite></a>.</p></div><div id="rfc.section.4.5.3.p.2"><p>All IDMEFv2 systems SHOULD be identified by a certificate containing a DNS-ID identifier as in <a href="#RFC6125"><cite title="Representation and Verification of Domain-Based Application Service Identity within Internet Public Key Infrastructure Using X.509 (PKIX) Certificates in the Context of Transport Layer Security (TLS)">[RFC6125]</cite></a> ch 6.4; Common Names (CN-IDs) MUST NOT be included in certificates identifying IDMEFv2 systems.</p></div></section><section id="n-certificate-validation"><h4 id="rfc.section.4.5.4"><a href="#rfc.section.4.5.4">4.5.4.</a> <a href="#n-certificate-validation">Certificate validation</a></h4><div id="rfc.section.4.5.4.p.1" class="avoidbreakafter"><p>IDMEFv2 systems MUST verify the reference identifiers of their peers against those stored in the certificates presented using the methods defined in <a href="#RFC6125"><cite title="Representation and Verification of Domain-Based Application Service Identity within Internet Public Key Infrastructure Using X.509 (PKIX) Certificates in the Context of Transport Layer Security (TLS)">[RFC6125]</cite></a>. In addition, the following IDMEFv2-specific considerations apply:</p></div><div id="rfc.section.4.5.4.p.2"><ul><li><div><p>Wildcards MUST NOT appear in the DNS-ID of a certificate identifying an IDMEFv2 system. If such a certificate is received by an IDMEFv2 system, the verification MUST fail and the receiving IDMEFv2 system MUST close the connection.</p></div> </li><li><div><p>An IDMEFv2 system MAY match the DNS-ID with a reverse DNS lookup of the connecting IDMEFv2 peer; this support SHOULD allow the lookup to be cached and/or done in advance in order to ensure verifiability during instability or compromise of DNS itself.</p></div> </li><li><div><p>IDMEFv2 systems MUST support the verification of certificates against an explicit list of approved peer certificates.</p></div> </li><li><div><p>IDMEFv2 systems MAY apply additional security measures such as IP filtering to further restrict the list of authorized peers. Such additional defenses are outside of the scope of this specification.</p></div> </li></ul></div></section><section id="n-pki-integration-and-certificate-issuance"><h4 id="rfc.section.4.5.5"><a href="#rfc.section.4.5.5">4.5.5.</a> <a href="#n-pki-integration-and-certificate-issuance">PKI integration and certificate issuance</a></h4><div id="rfc.section.4.5.5.p.1"><p>This document makes no provision on whether the security consortium implementing IDMEFv2 is responsible or not for issuing the certificates used by the systems.</p></div><div id="rfc.section.4.5.5.p.2"><p>In a PKIX certificate to be presented by an IDMEFv2 system, the certificate MUST include one or more identifiers associated with the IDMEFv2 system.</p></div><div id="rfc.section.4.5.5.p.3" class="avoidbreakafter"><p>The following IDMEFv2-specific considerations apply:</p></div><div id="rfc.section.4.5.5.p.4"><ul><li><div><p>Support for the DNS-ID identifier type <a href="#RFC5280"><cite title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</cite></a> is REQUIRED in both IDMEFv2 Analyzers and Managers. Certification authorities that issue IDMEFv2-specific certificates MUST support the DNS-ID identifier type. IDMEFv2 service providers SHOULD include the DNS-ID identifier type in certificate requests.</p></div> </li><li><div><p>Support for the SRV-ID identifier type <a href="#RFC4985"><cite title="Internet X.509 Public Key Infrastructure Subject Alternative Name for Expression of Service Name">[RFC4985]</cite></a> is REQUIRED in both IDMEFv2 Analyzers and Managers implementations using the "_idmef" application service type. Certificate authorities that issue IDMEFv2-specific certificates SHOULD support the SRV-ID identifier type. IDMEFv2 service providers SHOULD include the SRV-ID identifier type in certificate requests.</p></div> </li><li><div><p>Support for the URI-ID identifier type (<a href="#RFC5280"><cite title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</cite></a> and <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>) is OPTIONAL for both IDMEFv2 Analyzers and Managers. Certification authorities that issue IDMEFv2-specific certificates SHOULD support the URI-ID identifier type. IDMEFv2 service providers MAY include the URI-ID identifier type in certificate requests.</p></div> </li><li><div><p>Support for the CN-ID identifier type <a href="#RFC5280"><cite title="Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile">[RFC5280]</cite></a> is discouraged. Certification authorities that issue IDMEFv2-specific certificates SHOULD NOT support the CN-ID identifier type. IDMEFv2 service providers MUST NOT include the CN-ID identifier type in certificate requests.</p></div> </li><li><div><p>DNS domain names in IDMEFv2-specific certificates MUST NOT contain the wildcard character '*'. Certification authorities that issue IDMEFv2-specific certificates MUST refuse to issue certificates containing a wildcard character.</p></div> </li></ul></div><div id="rfc.section.4.5.5.p.5"><p>Great care must be taken by administrators when selecting the PKI to use, as trusting a rogue PKI could have dramatic results on the integrity, confidentiality and authentication mechanisms provided by TLS; and hence, result in the compromise of the protocol defined in this specification.</p></div></section></section><section id="n-locating-the-https-endpoint-using-dns"><h3 id="rfc.section.4.6"><a href="#rfc.section.4.6">4.6.</a> <a href="#n-locating-the-https-endpoint-using-dns">Locating the HTTPS endpoint using DNS</a></h3><div id="rfc.section.4.6.p.1" class="avoidbreakafter"><p>Information about an organization's IDMEFv2 over HTTPS endpoint's location may be stored using DNS Service Location Records (SRV) <a href="#RFC2782"><cite title="A DNS RR for specifying the location of services (DNS SRV)">[RFC2782]</cite></a>. The data in a SRV record contains the DNS name of the server that provides the IDMEFv2 over HTTPS server, the corresponding Port number, and parameters that enable the client to choose an appropriate server from multiple servers according to the algorithm described in <a href="#RFC2782"><cite title="A DNS RR for specifying the location of services (DNS SRV)">[RFC2782]</cite></a>. The name of this record has the following format:</p></div><div id="rfc.section.4.6.p.2"><pre class="text">_&lt;Service&gt;._&lt;Proto&gt;.&lt;Domain&gt;</pre></div><div id="rfc.section.4.6.p.3"><p>where &lt;Service&gt; is always "idmef", and &lt;Proto&gt; is always "tcp". &lt;Domain&gt; is the domain name of the entity exposing the endpoint. Note that "idmef" is the symbolic name for the IDMEFv2 over HTTPS service in Assigned Numbers <a href="#RFC3232"><cite title="Assigned Numbers: RFC 1700 is Replaced by an On-line Database">[RFC3232]</cite></a>, as required by <a href="#RFC2782"><cite title="A DNS RR for specifying the location of services (DNS SRV)">[RFC2782]</cite></a>.</p></div><div id="rfc.section.4.6.p.4" class="avoidbreakafter"><p>Presence of such records enables clients to find the IDMEFv2 over HTTPS endpoints using standard DNS query. An IDMEFv2 system seeking the endpoint for a particular entity, does a SRV record query using the DNS name formed as described in the preceding paragraph, and interprets the response as described in <a href="#RFC2782"><cite title="A DNS RR for specifying the location of services (DNS SRV)">[RFC2782]</cite></a> to determine a host (or set of hosts) to contact. As an example, a client that searches for the IDMEFv2 over HTTPS endpoint for "example.net" will submit a DNS query for a set of SRV records with owner name:</p></div><div id="rfc.section.4.6.p.5"><pre class="text">_idmef._tcp.example.net.</pre></div><div id="rfc.section.4.6.p.6" class="avoidbreakafter"><p>The requesting system will receive the list of SRV records published in DNS that satisfy the requested criteria. The following is an example of such a record:</p></div><div id="rfc.section.4.6.p.7"><pre class="text">_idmef._tcp.example.net.  IN  SRV  0  0  12345  soc.example.net.</pre></div><div id="rfc.section.4.6.p.8"><p>The set of returned records may contain multiple records in the case where multiple servers can act as endpoints for the same domain. If there are no matching SRV records available for the domain name, the client SHOULD NOT attempt to 'walk the tree' by removing the least significant portion of the constructed fully qualified domain name.</p></div></section></section><hr class="noprint"><section id="serialization_json"><h2 id="rfc.section.5" class="np"><a href="#rfc.section.5">5.</a> <a href="#serialization_json">The JavaScript Object Notation Serialization Method</a></h2><div id="rfc.section.5.p.1"><p>This serialization method aims to convert IDMEFv2 messages to a format that is easy to parse and process, both by software/hardware processors, as well as humans.</p></div><div id="rfc.section.5.p.2"><p>It relies on the the JavaScript Object Notation (JSON) Data Interchange Format defined in <a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a>.</p></div><div id="rfc.section.5.p.3"><p>Conforming implementations MUST implement all the requirements specified in <a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a>.</p></div><div id="rfc.section.5.p.4" class="avoidbreakafter"><p>In addition, the following rules MUST be observed when serializing an IDMEFv2 message:</p></div><div id="rfc.section.5.p.5"><ul><li><div><p>The top-level Alert class (<a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> ch 4.2) is represented as a JSON object (<a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> ch 4). This JSON object is returned to the calling process at the end of the serialization process.</p></div> </li><li><div><p>Aggregate classes are represented as JSON objects and stored as members of the top-level JSON object, using the same name as in the IDMEF data model. E.g. the Analyzer aggregate class (<a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> ch 4.3) appears under the name "Analyzer" inside the top-level JSON object.</p></div> </li><li><div><p>Attributes are stored as members of the JSON object representing the class they belong to, using the same name as in the IDMEF data model. E.g. the "Version" attribute of the Alert class is stored under the name "Version" inside the top-level JSON object.</p></div> </li><li><div><p>Lists from the IDMEF data model are represented as JSON arrays (<a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> ch 5). This also applies to aggregate classes where a list is expected. E.g. the "Sensor" member inside the top-level JSON object contains a list of objects, where each object represents an instance of the Sensor aggregate class (<a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> ch 4.4).</p></div> </li><li><div><p>The various string-based data types listed in <a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a> ch 3.3 are represented as JSON strings (<a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> ch 7). Please note that the issues outlined in <a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> ch 8 regarding strings processing also apply here.</p></div> </li><li><div><p>Since JSON does not provide a way to distinguish between an integer value and a floating-point (decimal) value, IDMEF attributes with the "INT" and "FLOAT" type annotations are both represented as JSON numbers (<a href="#RFC8259"><cite title="The JavaScript Object Notation (JSON) Data Interchange Format">[RFC8259]</cite></a> ch 6).</p></div> </li></ul></div></section><hr class="noprint"><section id="n-security-considerations"><h2 id="rfc.section.6" class="np"><a href="#rfc.section.6">6.</a> <a href="#n-security-considerations">Security Considerations</a></h2><div id="rfc.section.6.p.1"><p>Most of the content in <a href="#protocol" title="Transmission of IDMEFv2 Messages over HTTPS">Section 4</a> deals with security considerations. Great care has been taken to protect the confidentiality, authentification and integrity of IDMEFv2 messages while in transit.</p></div><div id="rfc.section.6.p.2"><p>In addition, to the requirements set in <a href="#protocol" title="Transmission of IDMEFv2 Messages over HTTPS">Section 4</a>, all security considerations of related documents apply, especially the Incident Detection Message Exchange Format version 2 <a href="#RFC-DEV-IDMEFv2"><cite title="The Incident Detection Message Exchange Format (IDMEF) version 2">[RFC-DEV-IDMEFv2]</cite></a>. Implementations should also be aware of known attacks against Transport Layer Security (TLS) and Datagram TLS (DTLS), and how to mitigate them <a href="#RFC7457"><cite title="Summarizing Known Attacks on Transport Layer Security (TLS) and Datagram TLS (DTLS)">[RFC7457]</cite></a>.</p></div><div id="rfc.section.6.p.3" class="avoidbreakafter"><p>Specific considerations have been taken into account regarding certificates usage:</p></div><div id="rfc.section.6.p.4"><ul><li><div><p>Use of the wildcard character inside certificates lacks clear specifications and consistency across application technologies. Considering the issues outlined in <a href="#RFC6125"><cite title="Representation and Verification of Domain-Based Application Service Identity within Internet Public Key Infrastructure Using X.509 (PKIX) Certificates in the Context of Transport Layer Security (TLS)">[RFC6125]</cite></a> ch 7.2 regarding such certificates, the use of wildcard characters inside certificates is explicitly prohibited in this document.</p></div> </li><li><div><p>Use of the Common Name field (CN-ID) has been deprecated for a long time (<a href="#RFC9110"><cite title="HTTP Semantics">[RFC9110]</cite></a> ch 3.1). Moreover, this field does not cope well with multiple identifiers (<a href="#RFC6125"><cite title="Representation and Verification of Domain-Based Application Service Identity within Internet Public Key Infrastructure Using X.509 (PKIX) Certificates in the Context of Transport Layer Security (TLS)">[RFC6125]</cite></a> ch 7.4). As such, this document explicitly prohibits the use of CN-IDs altogether.</p></div> </li></ul></div><div id="rfc.section.6.p.5"><p>IDMEFv2 systems MAY implement additional security measures (e.g. confidentiality and integrity of specific data inside the message at the field's level). Such additions SHOULD be designed with interoperability in mind, so that implementations that do not recognize these extensions can still process IDMEFv2 messages in a reasonable manner without degrading the security provided by these additions (e.g. by omitting the additions entirely when passing the message to another system, or by handling them as opaque data). The design of such measures is outside the scope of this document.</p></div></section><hr class="noprint"><section id="iana"><h2 id="rfc.section.7" class="np"><a href="#rfc.section.7">7.</a> <a href="#iana">IANA Considerations</a></h2><div id="rfc.section.7.p.1"><p>Consistent with <a href="#BCP56">[BCP56]</a>, since IDMEFv2 over HTTP/TLS is a substantially new service, and should be controlled at the consortium member network's border differently than HTTP/TLS, it requires a new port number.</p></div><div id="rfc.section.7.p.2"><p>IANA has assigned port 12345/tcp to IDMEFv2 over HTTP/TLS with service name "IDMEFv2 over HTTP/TLS".</p></div></section><hr class="noprint"><section id="n-acknowledgement"><h2 id="rfc.section.8" class="np"><a href="#rfc.section.8">8.</a> <a href="#n-acknowledgement">Acknowledgement</a></h2><div id="rfc.section.8.p.1"><p>The following groups and individuals contributed to the creation of this document and should be recognized for their efforts.</p></div><div id="rfc.section.8.p.2"><ul><li><div><p>Thomas Andrejak &amp; François Poirotte (Co-authors of the first version of this document)</p></div> </li></ul></div></section><hr class="noprint"><section id="rfc.references" class="np"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a> References</h2><section class="np"><div id="rfc.references.1"><h3 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a> Normative References</h3><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd>Bradner, S., “<a href="https://www.rfc-editor.org/rfc/rfc2119.html">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP 14, RFC 2119, <a href="https://dx.doi.org/10.17487/RFC2119">DOI 10.17487/RFC2119</a>, March 1997, &lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;.</dd><dt id="RFC-DEV-IDMEFv2">[RFC-DEV-IDMEFv2]</dt><dd>Lehmann, G., “<a href="https://github.com/IDMEFv2/">The Incident Detection Message Exchange Format (IDMEF) version 2</a>”, Internet-Draft draft-lehmann-idmefv2-01 (<a href="https://datatracker.ietf.org/doc/draft-lehmann-idmefv2">work in progress</a>), October 2024, &lt;<a href="https://github.com/IDMEFv2/">https://github.com/IDMEFv2/</a>&gt;.</dd><dt id="RFC9112">[RFC9112]</dt><dd>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “<a href="https://www.rfc-editor.org/rfc/rfc9112.html">HTTP/1.1</a>”, STD 99, RFC 9112, <a href="https://dx.doi.org/10.17487/RFC9112">DOI 10.17487/RFC9112</a>, June 2022, &lt;<a href="https://www.rfc-editor.org/info/rfc9112">https://www.rfc-editor.org/info/rfc9112</a>&gt;.</dd><dt id="RFC3986">[RFC3986]</dt><dd>Berners-Lee, T., Fielding, R., and L. Masinter, “<a href="https://www.rfc-editor.org/rfc/rfc3986.html">Uniform Resource Identifier (URI): Generic Syntax</a>”, STD 66, RFC 3986, <a href="https://dx.doi.org/10.17487/RFC3986">DOI 10.17487/RFC3986</a>, January 2005, &lt;<a href="https://www.rfc-editor.org/info/rfc3986">https://www.rfc-editor.org/info/rfc3986</a>&gt;.</dd><dt id="RFC9113">[RFC9113]</dt><dd>Thomson, M., Ed. and C. Benfield, Ed., “<a href="https://www.rfc-editor.org/rfc/rfc9113.html">HTTP/2</a>”, RFC 9113, <a href="https://dx.doi.org/10.17487/RFC9113">DOI 10.17487/RFC9113</a>, June 2022, &lt;<a href="https://www.rfc-editor.org/info/rfc9113">https://www.rfc-editor.org/info/rfc9113</a>&gt;.</dd><dt id="RFC9110">[RFC9110]</dt><dd>Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke, Ed., “<a href="https://www.rfc-editor.org/rfc/rfc9110.html">HTTP Semantics</a>”, STD 97, RFC 9110, <a href="https://dx.doi.org/10.17487/RFC9110">DOI 10.17487/RFC9110</a>, June 2022, &lt;<a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>&gt;.</dd><dt id="RFC8446">[RFC8446]</dt><dd>Rescorla, E., “<a href="https://www.rfc-editor.org/rfc/rfc8446.html">The Transport Layer Security (TLS) Protocol Version 1.3</a>”, RFC 8446, <a href="https://dx.doi.org/10.17487/RFC8446">DOI 10.17487/RFC8446</a>, August 2018, &lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;.</dd><dt id="RFC5280">[RFC5280]</dt><dd>Cooper, D., Santesson, S., Farrell, S., Boeyen, S., Housley, R., and W. Polk, “<a href="https://www.rfc-editor.org/rfc/rfc5280.html">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>”, RFC 5280, <a href="https://dx.doi.org/10.17487/RFC5280">DOI 10.17487/RFC5280</a>, May 2008, &lt;<a href="https://www.rfc-editor.org/info/rfc5280">https://www.rfc-editor.org/info/rfc5280</a>&gt;.</dd><dt id="RFC4985">[RFC4985]</dt><dd>Santesson, S., “<a href="https://www.rfc-editor.org/rfc/rfc4985.html">Internet X.509 Public Key Infrastructure Subject Alternative Name for Expression of Service Name</a>”, RFC 4985, <a href="https://dx.doi.org/10.17487/RFC4985">DOI 10.17487/RFC4985</a>, August 2007, &lt;<a href="https://www.rfc-editor.org/info/rfc4985">https://www.rfc-editor.org/info/rfc4985</a>&gt;.</dd><dt id="RFC6125">[RFC6125]</dt><dd>Saint-Andre, P. and J. Hodges, “<a href="https://www.rfc-editor.org/rfc/rfc6125.html">Representation and Verification of Domain-Based Application Service Identity within Internet Public Key Infrastructure Using X.509 (PKIX) Certificates in the Context of Transport Layer Security (TLS)</a>”, RFC 6125, <a href="https://dx.doi.org/10.17487/RFC6125">DOI 10.17487/RFC6125</a>, March 2011, &lt;<a href="https://www.rfc-editor.org/info/rfc6125">https://www.rfc-editor.org/info/rfc6125</a>&gt;.</dd><dt id="RFC8259">[RFC8259]</dt><dd>Bray, T., Ed., “<a href="https://www.rfc-editor.org/rfc/rfc8259.html">The JavaScript Object Notation (JSON) Data Interchange Format</a>”, STD 90, RFC 8259, <a href="https://dx.doi.org/10.17487/RFC8259">DOI 10.17487/RFC8259</a>, December 2017, &lt;<a href="https://www.rfc-editor.org/info/rfc8259">https://www.rfc-editor.org/info/rfc8259</a>&gt;.</dd></dl></div></section><section><div id="rfc.references.2"><h3 id="rfc.section.9.2"><a href="#rfc.section.9.2">9.2.</a> Informative References</h3><dl class="reference"><dt id="RFC3232">[RFC3232]</dt><dd>Reynolds, J., Ed., “<a href="https://www.rfc-editor.org/rfc/rfc3232.html">Assigned Numbers: RFC 1700 is Replaced by an On-line Database</a>”, RFC 3232, <a href="https://dx.doi.org/10.17487/RFC3232">DOI 10.17487/RFC3232</a>, January 2002, &lt;<a href="https://www.rfc-editor.org/info/rfc3232">https://www.rfc-editor.org/info/rfc3232</a>&gt;.</dd><dt id="RFC2045">[RFC2045]</dt><dd>Freed, N. and N. Borenstein, “<a href="https://www.rfc-editor.org/rfc/rfc2045.html">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>”, RFC 2045, <a href="https://dx.doi.org/10.17487/RFC2045">DOI 10.17487/RFC2045</a>, November 1996, &lt;<a href="https://www.rfc-editor.org/info/rfc2045">https://www.rfc-editor.org/info/rfc2045</a>&gt;.</dd><dt id="RFC2046">[RFC2046]</dt><dd>Freed, N. and N. Borenstein, “<a href="https://www.rfc-editor.org/rfc/rfc2046.html">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>”, RFC 2046, <a href="https://dx.doi.org/10.17487/RFC2046">DOI 10.17487/RFC2046</a>, November 1996, &lt;<a href="https://www.rfc-editor.org/info/rfc2046">https://www.rfc-editor.org/info/rfc2046</a>&gt;.</dd><dt id="RFC2782">[RFC2782]</dt><dd>Gulbrandsen, A., Vixie, P., and L. Esibov, “<a href="https://www.rfc-editor.org/rfc/rfc2782.html">A DNS RR for specifying the location of services (DNS SRV)</a>”, RFC 2782, <a href="https://dx.doi.org/10.17487/RFC2782">DOI 10.17487/RFC2782</a>, February 2000, &lt;<a href="https://www.rfc-editor.org/info/rfc2782">https://www.rfc-editor.org/info/rfc2782</a>&gt;.</dd><dt id="RFC7301">[RFC7301]</dt><dd>Friedl, S., Popov, A., Langley, A., and E. Stephan, “<a href="https://www.rfc-editor.org/rfc/rfc7301.html">Transport Layer Security (TLS) Application-Layer Protocol Negotiation Extension</a>”, RFC 7301, <a href="https://dx.doi.org/10.17487/RFC7301">DOI 10.17487/RFC7301</a>, July 2014, &lt;<a href="https://www.rfc-editor.org/info/rfc7301">https://www.rfc-editor.org/info/rfc7301</a>&gt;.</dd><dt id="RFC7457">[RFC7457]</dt><dd>Sheffer, Y., Holz, R., and P. Saint-Andre, “<a href="https://www.rfc-editor.org/rfc/rfc7457.html">Summarizing Known Attacks on Transport Layer Security (TLS) and Datagram TLS (DTLS)</a>”, RFC 7457, <a href="https://dx.doi.org/10.17487/RFC7457">DOI 10.17487/RFC7457</a>, February 2015, &lt;<a href="https://www.rfc-editor.org/info/rfc7457">https://www.rfc-editor.org/info/rfc7457</a>&gt;.</dd><dt id="BCP56">[BCP56]</dt><dd id="RFC9205">Nottingham, M., “<a href="https://www.rfc-editor.org/rfc/rfc9205.html">Building Protocols with HTTP</a>”, BCP 56, RFC 9205, <a href="https://dx.doi.org/10.17487/RFC9205">DOI 10.17487/RFC9205</a>, June 2022.</dd><dd>&lt;<a href=""></a>&gt;</dd><dt id="BCP195">[BCP195]</dt><dd id="RFC7525">Sheffer, Y., Holz, R., and P. Saint-Andre, “<a href="https://www.rfc-editor.org/rfc/rfc7525.html">Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)</a>”, BCP 195, RFC 7525, <a href="https://dx.doi.org/10.17487/RFC7525">DOI 10.17487/RFC7525</a>, May 2015.</dd><dd id="RFC8996">Moriarty, K. and S. Farrell, “<a href="https://www.rfc-editor.org/rfc/rfc8996.html">Deprecating TLS 1.0 and TLS 1.1</a>”, BCP 195, RFC 8996, <a href="https://dx.doi.org/10.17487/RFC8996">DOI 10.17487/RFC8996</a>, March 2021.</dd><dd>&lt;<a href=""></a>&gt;</dd></dl></div></section></section><hr class="noprint"><section id="appendix-http-codes"><h2 id="rfc.section.A" class="np"><a href="#rfc.section.A">Appendix A.</a> <a href="#appendix-http-codes">HTTP Result Codes</a></h2><div id="rfc.section.A.p.1"><p>The following table MAY be used as general guidance by IDMEFv2 systems acting as HTTP servers when mapping various error conditions to an appropriate HTTP result code.</p></div><div id="rfc.section.A.p.2"><p>Result codes other than the ones listed below MAY still be used, so long as their semantics match the requirements set in <a href="#protocol" title="Transmission of IDMEFv2 Messages over HTTPS">Section 4</a>.</p></div><div class="tt"><table class="v3 tcenter"><caption>Table 1: Mapping error conditions to HTTP result codes</caption><thead><tr><th class="left"><div id="rfc.section.A.p.1"><p>Error condition</p></div> </th><th class="left"><div id="rfc.section.A.p.1"><p>HTTP result code</p></div> </th></tr></thead><tbody><tr><td class="left"><div id="rfc.section.A.p.1"><p>No error</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>2xx, usually 200 (OK) or 204 (No content)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Malformed HTTP request (e.g. the HTTP request's body is not a valid IDMEFv2 message)</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>400 (Bad request)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Unauthorized request (e.g. a request from an unauthorized IP address)</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>403 (Forbidden)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>The HTTP request uses a method other than 'POST'</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>405 (Method Not Allowed). In addition, the "Allow" HTTP response header MUST be set accordingly when this code is used.</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Failure to negotiate the response's media type based on the "Accept" HTTP request header.</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>406 (Not Acceptable)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Missing "Content-Length" request header in case the implementation does not support the chunked transfer encoding</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>411 (Length required), but please note that conforming implementations are REQUIRED to support the chunked transfer encoding</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Exceedingly long IDMEFv2 message (e.g. the message is considered to be too big due to size restrictions applied by an administrator)</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>413 (Request entity too large)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Unsupported serialization format</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>415 (Unsupported media type)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Internal server error</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>500 (Internal server error)</p></div> </td></tr><tr><td class="left"><div id="rfc.section.A.p.1"><p>Unavailable service (e.g. the IDMEFv2 system is overloaded or the next processing service is unavailable)</p></div> </td><td class="left"><div id="rfc.section.A.p.1"><p>503 (Service unavailable)</p></div> </td></tr></tbody></table></div></section><hr class="noprint"><section id="n-transmission-examples"><h2 id="rfc.section.B" class="np"><a href="#rfc.section.B">Appendix B.</a> <a href="#n-transmission-examples">Transmission examples</a></h2><div id="rfc.section.B.p.1"><p>In the examples below, "&gt;" denotes a request sent by the IDMEFv2 system acting as an HTTP client to an IDMEFv2 system acting as an HTTP server, while "&lt;" denotes a response to such requests.</p></div><section id="n-acknowledged-idmefv2-message"><h3 id="rfc.section.B.1"><a href="#rfc.section.B.1">B.1.</a> <a href="#n-acknowledged-idmefv2-message">Acknowledged IDMEFv2 message</a></h3><div id="rfc.section.B.1.p.1"><p>In this example, the IDMEFv2 system acting as an HTTP server acknowledges the message sent by an IDMEFv2 system acting as an HTTP client. Because the HTTP server does not wish to send any content back to the client, it replies with HTTP result code 204 (No content), and both the "Content-Type" and "Content-Length" headers are omitted from the response.</p></div><div id="rfc.section.B.1.p.2"><pre class="text">&gt; POST / HTTP/1.1\r\n
+&gt; Host: idmefv2.example.com:12345\r\n
+&gt; Content-Type: application/json\r\n
+&gt; Content-Length: 1234\r\n
+&gt; Accept: application/json
+&gt; \r\n
+&gt; {"Version": "..."}
+
+&lt; 204 No content\r\n
+&lt; Connection: close\r\n
+&lt; \r\n</pre></div></section><section id="n-unsupported-serialization-format"><h3 id="rfc.section.B.2"><a href="#rfc.section.B.2">B.2.</a> <a href="#n-unsupported-serialization-format">Unsupported serialization format</a></h3><div id="rfc.section.B.2.p.1"><p>The following example illustrates the situation where an IDMEFv2 system acting as an HTTP client tries to send a message using a serialization format (media type) that is either not recognized or not supported by the IDMEFv2 system acting as an HTTP server.</p></div><div id="rfc.section.B.2.p.2"><pre class="text">&gt; POST / HTTP/1.1\r\n
+&gt; Host: idmefv2.example.com:12345\r\n
+&gt; Content-Type: application/x-idmefv2\r\n
+&gt; Content-Length: 1234\r\n
+&gt; Accept: application/json
+&gt; \r\n
+&gt; ...
+
+&lt; 415 Unsupported media type\r\n
+&lt; Connection: close\r\n
+&lt; Content-Type: application/json\r\n
+&lt; Content-Length: 61\r\n
+&lt; \r\n
+&lt; {"error": "Unsupported or unrecognized serialization format"}</pre></div></section><section id="n-content-negotiation-failure"><h3 id="rfc.section.B.3"><a href="#rfc.section.B.3">B.3.</a> <a href="#n-content-negotiation-failure">Content negotiation failure</a></h3><div id="rfc.section.B.3.p.1"><p>In this example, the IDMEFv2 system acting as an HTTP client sends an IDMEFv2 message and requests that the server reponds using the "application/x-example-type" media type.</p></div><div id="rfc.section.B.3.p.2"><p>Since the server wishes to include details in the HTTP response but does not know how to generate a response using that media type, it sends back a page using HTTP result code 406 (Not acceptable).</p></div><div id="rfc.section.B.3.p.3"><p>The response's body may contain additional information about the media types the server is willing to use and the client may try to resend the request using one of the alternative media types presented inside the new HTTP request's "Accept" header.</p></div><div id="rfc.section.B.3.p.4"><pre class="text">&gt; POST / HTTP/1.1\r\n
+&gt; Host: idmefv2.example.com:12345\r\n
+&gt; Content-Type: application/json\r\n
+&gt; Content-Length: 1234\r\n
+&gt; Accept: application/x-example-type
+&gt; \r\n
+&gt; ...
+
+&lt; 406 Not Acceptable\r\n
+&lt; Connection: close\r\n
+&lt; Content-Type: application/json\r\n
+&lt; Content-Length: 111\r\n
+&lt; \r\n
+&lt; {"error": "Cannot reply using 'application/x-example-type'
+  media type",\n"alternatives": ["application/json"]}\n</pre></div></section></section><hr class="noprint"><section id="rfc.authors" class="np"><h2><a href="#rfc.authors">Author's Address</a></h2><address><b>Gilles Lehmann</b><br>Telecom Sud Paris<br>FR<br>EMail: <a href="mailto:gilles.lehmann@telecom-sudparis.eu">gilles.lehmann@telecom-sudparis.eu</a></address></section></body></html>
