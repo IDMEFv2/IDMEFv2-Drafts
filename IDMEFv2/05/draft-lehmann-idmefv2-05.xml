@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-04" ipr="trust200902" consensus="true" obsoletes="4765">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-05" ipr="trust200902" consensus="true" obsoletes="4765">
   <front>
     <title abbrev="IDMEFv2">The Incident Detection Message Exchange Format version 2 (IDMEFv2)</title>
     <author fullname="Gilles Lehmann">
@@ -12,7 +12,7 @@
         <email>gilles.lehmann@telecom-sudparis.eu</email>
       </address>
     </author>
-    <date day="4" month="October" year="2024"/>
+    <date day="1" month="April" year="2025"/>
     <keyword>RFC4765</keyword>
     <keyword>RFC4766</keyword>
     <keyword>IDMEF</keyword>
@@ -5652,21 +5652,25 @@ Source(0).IP</sourcecode>
             managed by IANA:</t>
       <ul>
             <li>
-                <t>Name of the parent registry: "Incident Detection Message Exchange Format v2 (IDMEF)"</t>
+                <t>Name of the registry group: "Incident Detection Message Exchange Format v2 (IDMEF)"</t>
             </li>
             <li>
-                <t>URL of the registry: &lt;http://www.iana.org/assignments/idmef2&gt;</t>
+                <t>URL of the registry: &lt;http://www.iana.org/assignments/idmefv2&gt;</t>
             </li>
             <li>
                 <t>Namespace format: A registry entry consists of:</t>
                 <ul>
                     <li>
-                        <t>Value.  A value for a given IDMEF attribute.  It MUST conform
+                        <t>Rank. A uniq integer for this namespace. Range starts at 0 and ends at the
+                            length of this list. The maximum length of this list is 255.</t>
+                    </li>
+                    <li>
+                        <t>Keyword. A keyword for a given IDMEF attribute. It MUST conform
                             to the formatting specified by the IDMEF "ENUM" data type
                             (<xref target="data-types-enums"/>).</t>
                     </li>
                     <li>
-                        <t>Description. A short description of the enumerated value.</t>
+                        <t>Description. A short description of the enumerated keyword.</t>
                     </li>
                     <li>
                         <t>Reference. An optional list of URIs to further describe the value.</t>
@@ -5683,12 +5687,12 @@ Source(0).IP</sourcecode>
         </ul>
       <t>The registries to be created are named in the "Registry Name" column
             of <xref target="iana-registries"/>. Each registry is initially populated
-            with values and descriptions that come from an attribute specified
+            with ranks, keywords and descriptions that come from an attribute specified
             in the IDMEF model (<xref target="model"/>).
-            The initial values for the Value and Description fields of a given
+            The initial Ranks, Keywords and Description fields of a given
             registry are listed in "Initial Values".
             The "Initial Values" column points to a table in this document that
-            lists and describes each enumerated value. Each enumerated value
+            lists and describes each enumerated keyword. Each enumerated keyword
             in the table gets a corresponding entry in a given registry.
             The initial value of the Reference field of every registry entry
             described below should be this document.</t>
