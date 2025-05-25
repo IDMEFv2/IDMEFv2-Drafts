@@ -126,85 +126,82 @@
         },
         "Analyzer": {
             "type": "object",
-            "items": {
-                "description": "The Analyzer class describes the module that has analyzed the data captured by the sensors, identified an event of interest and decided to create an alert.",
-                "properties": {
-                    "IP": {
-                        "description": "Analyzer IP address.",
-                        "$ref": "#/definitions/ipType"
-                    },
-                    "Name": {
-                        "description": "Name of the analyzer, which must be reasonably unique, however still bear some meaningful sense. This attribute usually denotes the hierarchy of organizational units the detector belongs to and its own name. It MAY also be used to distinguish multiple analyzers running with the same IP address.",
-                        "type": "string"
-                    },
-                    "Hostname": {
-                        "description": "Hostname of this analyzer. SHOULD be a fully-qualified domain name.",
-                        "type": "string"
-                    },
-                    "Model": {
-                        "description": "Analyzer model description (usually its generic name, brand and version).",
-                        "type": "string"
-                    },
-                    "Type": {
-                        "description": "Analyzer type.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/analyzerTypeEnum"
-                        }
-                    },
-                    "Category": {
-                        "description": "Analyzer categories.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/analyzerCategoryEnum"
-                        }
-                    },
-                    "ext-Category": {
-                        "description": "A means by which to extend the Category attribute. (see )",
-                        "type": "string"
-                    },
-                    "Data": {
-                        "description": "Type of data analyzed during the detection.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/analyzerDataEnum"
-                        }
-                    },
-                    "ext-Data": {
-                        "description": "A means by which to extend the Data attribute. (see )",
-                        "type": "string"
-                    },
-                    "Method": {
-                        "description": "Detection method.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/analyzerMethodEnum"
-                        }
-                    },
-                    "ext-Method": {
-                        "description": "A means by which to extend the Method attribute. (see )",
-                        "type": "string"
-                    },
-                    "GeoLocation": {
-                        "description": "GPS coordinates for the analyzer.",
-                        "$ref": "#/definitions/geolocType"
-                    },
-                    "UnLocation": {
-                        "description": "Standard UN/Locode for the analyzer.",
-                        "$ref": "#/definitions/unlocodeType"
-                    },
-                    "Location": {
-                        "description": "Internal name for the location of the analyzer.",
-                        "type": "string"
+            "description": "The Analyzer class describes the module that has analyzed the data captured by the sensors, identified an event of interest and decided to create an alert.",
+            "properties": {
+                "IP": {
+                    "description": "Analyzer IP address.",
+                    "$ref": "#/definitions/ipType"
+                },
+                "Name": {
+                    "description": "Name of the analyzer, which must be reasonably unique, however still bear some meaningful sense. This attribute usually denotes the hierarchy of organizational units the detector belongs to and its own name. It MAY also be used to distinguish multiple analyzers running with the same IP address.",
+                    "type": "string"
+                },
+                "Hostname": {
+                    "description": "Hostname of this analyzer. SHOULD be a fully-qualified domain name.",
+                    "type": "string"
+                },
+                "Model": {
+                    "description": "Analyzer model description (usually its generic name, brand and version).",
+                    "type": "string"
+                },
+                "Type": {
+                    "description": "Analyzer type.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/analyzerTypeEnum"
                     }
                 },
-                "additionalProperties": false,
-                "type": "object",
-                "required": [
-                    "IP",
-                    "Name"
-                ]
-            }
+                "Category": {
+                    "description": "Analyzer categories.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/analyzerCategoryEnum"
+                    }
+                },
+                "ext-Category": {
+                    "description": "A means by which to extend the Category attribute. (see )",
+                    "type": "string"
+                },
+                "Data": {
+                    "description": "Type of data analyzed during the detection.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/analyzerDataEnum"
+                    }
+                },
+                "ext-Data": {
+                    "description": "A means by which to extend the Data attribute. (see )",
+                    "type": "string"
+                },
+                "Method": {
+                    "description": "Detection method.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/analyzerMethodEnum"
+                    }
+                },
+                "ext-Method": {
+                    "description": "A means by which to extend the Method attribute. (see )",
+                    "type": "string"
+                },
+                "GeoLocation": {
+                    "description": "GPS coordinates for the analyzer.",
+                    "$ref": "#/definitions/geolocType"
+                },
+                "UnLocation": {
+                    "description": "Standard UN/Locode for the analyzer.",
+                    "$ref": "#/definitions/unlocodeType"
+                },
+                "Location": {
+                    "description": "Internal name for the location of the analyzer.",
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "IP",
+                "Name"
+            ]
         },
         "Sensor": {
             "type": "array",
