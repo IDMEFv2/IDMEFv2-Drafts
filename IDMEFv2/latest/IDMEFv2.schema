@@ -128,6 +128,10 @@
             "type": "object",
             "description": "The Analyzer class describes the module that has analyzed the data captured by the sensors, identified an event of interest and decided to create an alert.",
             "properties": {
+                "ID": {
+                  "description": "Unique identifier for the analyzer.",
+                  "$ref": "#/definitions/uuidType"
+                },
                 "IP": {
                     "description": "Analyzer IP address.",
                     "$ref": "#/definitions/ipType"
@@ -199,7 +203,6 @@
             },
             "additionalProperties": false,
             "required": [
-                "IP",
                 "Name"
             ]
         },
@@ -208,6 +211,10 @@
             "items": {
                 "description": "The Sensor class describes the module that captured the data before sending it to an analyzer. The Sensor may be a subpart of the Analyzer.",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the sensor.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "The sensor's IP address.",
                         "$ref": "#/definitions/ipType"
@@ -244,7 +251,6 @@
                 "additionalProperties": false,
                 "type": "object",
                 "required": [
-                    "IP",
                     "Name"
                 ]
             }
@@ -254,6 +260,10 @@
             "items": {
                 "description": "The Source class describes the origin(s) of the event(s) leading up to the alert.",
                 "properties": {
+                    "ID": {
+                        "description": "Unique identifier for the Source.",
+                        "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "Source IP address.",
                         "$ref": "#/definitions/ipType"
@@ -325,6 +335,10 @@
             "items": {
                 "description": "The Target class describes the target(s) impacted by the event(s) leading up to the alert.",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the target.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "Target IP address.",
                         "$ref": "#/definitions/ipType"
@@ -386,6 +400,10 @@
             "items": {
                 "description": "The Vector class describes the vector(s) of the event(s) leading up to the alert. \u2022 Name, location, description, \u2026",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the GPS.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "Category": {
                         "description": "Category for the detected \"vector\".",
                         "type": "array",
@@ -438,9 +456,6 @@
                 },
                 "additionalProperties": false,
                 "type": "object",
-                "required": [
-                    "Category"
-                ]
             }
         },
         "Attachment": {

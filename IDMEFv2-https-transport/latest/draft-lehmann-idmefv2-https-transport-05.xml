@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-https-transport-04" ipr="trust200902" consensus="true" obsoletes="4767">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-https-transport-05" ipr="trust200902" consensus="true" obsoletes="4767">
   <front>
     <title abbrev="IDMEFv2 - HTTPS Transport">Transport of Incident Detection Message Exchange Format version 2 (IDMEFv2) Messages over HTTPS</title>
     <author fullname="Gilles Lehmann">
@@ -12,13 +12,15 @@
         <email>gilles.lehmann@telecom-sudparis.eu</email>
       </address>
     </author>
-    <date day="31" month="March" year="2025"/>
+    <date day="27" month="September" year="2025"/>
     <keyword>RFC4765</keyword>
     <keyword>IDMEF</keyword>
     <abstract>
       <t>The Incident Detection Message Exchange Format version 2 (IDMEFv2) defines a
         data representation for security incidents detected on cyber and/or physical
         infrastructures.</t>
+      <t>This draft is maintained the IDMEFv2 Task Force. Please consult our website
+        for more information. https://www.idmefv2.org</t>
       <t>The format is agnostic so it can be used in standalone or combined cyber
         (SIEM), physical (PSIM) and availability (NMS) monitoring systems. IDMEFv2 can
         also be used to represent man made or natural hazards threats.</t>
@@ -474,7 +476,7 @@
           <author fullname="Gilles Lehmann">
             <organization>Telecom SudParis - France</organization>
           </author>
-          <date day="31" month="March" year="2025"/>
+          <date day="27" month="September" year="2025"/>
         </front>
         <seriesInfo name="Internet-Draft" value="draft-lehmann-idmefv2-01"/>
       </reference>

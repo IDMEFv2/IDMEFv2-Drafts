@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-05" ipr="trust200902" consensus="true" obsoletes="4765">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-lehmann-idmefv2-06" ipr="trust200902" consensus="true" obsoletes="4765">
   <front>
     <title abbrev="IDMEFv2">The Incident Detection Message Exchange Format version 2 (IDMEFv2)</title>
     <author fullname="Gilles Lehmann">
@@ -12,7 +12,7 @@
         <email>gilles.lehmann@telecom-sudparis.eu</email>
       </address>
     </author>
-    <date day="1" month="April" year="2025"/>
+    <date day="27" month="September" year="2025"/>
     <keyword>RFC4765</keyword>
     <keyword>RFC4766</keyword>
     <keyword>IDMEF</keyword>
@@ -20,6 +20,8 @@
       <t>The Incident Detection Message Exchange Format version 2 (IDMEFv2) defines a
         date representation for security incidents detected on cyber and/or physical
         infrastructures.</t>
+      <t>This draft is maintained the IDMEFv2 Task Force. Please consult our website
+        for more information. https://www.idmefv2.org</t>
       <t>The format is agnostic so it can be used in standalone or combined cyber
         (SIEM), physical (PSIM) and availability (NMS) monitoring systems. IDMEFv2 can
         also be used to represent man made or natural hazards threats.</t>
@@ -541,7 +543,7 @@ Source(0).IP</sourcecode>
 |       |&lt;&gt;----------| Attachment |
 +-------+            +------------+</artwork>
         </figure>
-        <t>It is important to note that the data model does not specify how an alert
+        <t>It is important to note that the data model does not specify how an incident
                 should be categorized or identified.
                 For example, an attacker scanning a network for machines listening on a specific
                 port may be identified by one analyzer as a single attack against multiple targets,
@@ -674,18 +676,10 @@ Source(0).IP</sourcecode>
                         <t>Optional. Entity Name, monitored by the organisation, where the incident occurred.</t>
                         <t>Could be a town, region or country name or an internal name.  Could also be the name of a client for a MSSP centralizing it's client incidents in a single system.</t>
                         <t>Do not repeat the organisation name in the EntityName</t>
-                        <t>Example :</t>
-                        <ul>
-                            <li>
-                                <t>ACME HeadQuaters is located in Paris France and has a local office in India</t>
-                            </li>
-                            <li>
-                                <t>If the incident occurred in the local office : "OrganisationName" : " ACME" , "EntityName" : "India"</t>
-                            </li>
-                            <li>
-                                <t>If the incident occurred in the headquaters : "OrganisationName" : "ACME", "EntityName" : "Headquaters" (or "Paris")</t>
-                            </li>
-                        </ul>
+                        <t>Example:</t>
+                        <t>- ACME HeadQuaters is located in Paris France and has a local office in India</t>
+                        <t>- If the incident occurred in the local office: "OrganisationName": "ACME" , "EntityName": "India"</t>
+                        <t>- If the incident occurred in the headquaters: "OrganisationName": "ACME", "EntityName": "Headquaters" (or "Paris")</t>
                     </dd>
                 
                     <dt>EntityId</dt>
@@ -698,7 +692,9 @@ Source(0).IP</sourcecode>
                     <dd>
                         <t>Optional.
                             The incident's category &amp; subcategory as listed in <xref target="ENISA-RIST"/>
-                            using the format "category.subcategory" (e.g. "Attempt.Exploit").</t>
+                            using the format "category.subcategory" (e.g. "Attempt.Exploit"). The category
+                            attribute is being totally reworked and will be updated on next release (V07).
+                            Please visit IDMEFv2 Task Force for more information.</t>
                         <table anchor="enum-alert-category"><name>Incident taxonomy</name>
                             
                             <thead>
@@ -1381,7 +1377,7 @@ Source(0).IP</sourcecode>
                     <dt>Cause</dt>
                     <dd>
                         <t>Optional.
-                            Alert cause.
+                            Incident cause.
                             The cause can be modified by any analyser on the way of the alert and later
                             by the operator and/or the analyst if new investigation reveals and confirms
                             a different cause of the event.</t>
@@ -1475,7 +1471,7 @@ Source(0).IP</sourcecode>
                     <dd>
                         <t>Optional.
                             Short free text human-readable description of the event.
-                            The description can add detail to the alert classification for easiest/faster comprehension by the operator.
+                            The description can add detail to the event classification for easiest/faster comprehension by the operator.
                             Example :
                             * Cryptoware WannaCry blocked on pegasus server
                             * Unknown person entering through east doorway</t>
@@ -1661,8 +1657,8 @@ Source(0).IP</sourcecode>
                     <dt>Ref</dt>
                     <dd>
                         <t>Optional.
-                            References to sources of information related to the alert and/or
-                            vulnerability, and specific to this alert.</t>
+                            References to sources of information related to the incident and/or
+                            vulnerability, and specific to this incident.</t>
                         <t>This MAY be a URL to additional info, or a URN in a registered or
                             unregistered ad-hoc namespace bearing reasonable information value
                             and uniqueness, such as "urn:cve:CVE-2013-2266".</t>
@@ -1715,6 +1711,7 @@ Source(0).IP</sourcecode>
           <artwork type="ascii-art" align="center">+-----------------------+
 |       Analyzer        |
 +-----------------------+
+| UUID     ID           |
 | IP       IP           |
 | STRING   Name         |
 | STRING   Hostname     |
@@ -1733,9 +1730,15 @@ Source(0).IP</sourcecode>
         </figure>
         <t>The Analyzer class has the following attributes:</t>
         <dl newline="true">
+                    <dt>ID</dt>
+                    <dd>
+                        <t>Mandatory.
+                            Unique identifier for the analyzer.</t>
+                    </dd>
+                
                     <dt>IP</dt>
                     <dd>
-                        <t>Mandatory. Analyzer IP address.</t>
+                        <t>Optional. Analyzer IP address.</t>
                     </dd>
                 
                     <dt>Name</dt>
@@ -2843,6 +2846,7 @@ Source(0).IP</sourcecode>
           <artwork type="ascii-art" align="center">+----------------------+
 |        Sensor        |
 +----------------------+
+| UUID     ID          |
 | IP       IP          |
 | STRING   Name        |
 | STRING   Hostname    |
@@ -2855,9 +2859,15 @@ Source(0).IP</sourcecode>
         </figure>
         <t>The Sensor class has the following attributes:</t>
         <dl newline="true">
+                    <dt>ID</dt>
+                    <dd>
+                        <t>Mandatory.
+                            Unique identifier for the sensor.</t>
+                    </dd>
+                
                     <dt>IP</dt>
                     <dd>
-                        <t>Mandatory. The sensor's IP address.</t>
+                        <t>Optional. The sensor's IP address.</t>
                     </dd>
                 
                     <dt>Name</dt>
@@ -2921,12 +2931,13 @@ Source(0).IP</sourcecode>
       </section>
       <section anchor="class_source">
         <name>The Source Class</name>
-        <t>The Source class describes the origin(s) of the event(s) leading up to the alert.</t>
+        <t>The Source class describes the origin(s) of the event(s) leading up to the creation of this alert.</t>
         <figure anchor="class_source_diagram">
           <name>The Source class</name>
           <artwork type="ascii-art" align="center">+------------------------+
 |         Source         |
 +------------------------+
+| UUID       ID          |
 | IP         IP          |
 | STRING     Hostname    |
 | STRING     Note        |
@@ -2943,6 +2954,12 @@ Source(0).IP</sourcecode>
         </figure>
         <t>The Source class has the following attributes:</t>
         <dl newline="true">
+                    <dt>ID</dt>
+                    <dd>
+                        <t>Mandatory.
+                            Unique identifier for the source.</t>
+                    </dd>
+                
                     <dt>IP</dt>
                     <dd>
                         <t>Optional. Source IP address.</t>
@@ -2978,12 +2995,12 @@ Source(0).IP</sourcecode>
                 
                     <dt>User</dt>
                     <dd>
-                        <t>Optional. User ID or login responsible for the alert.</t>
+                        <t>Optional. User ID or login responsible for the incident.</t>
                     </dd>
                 
                     <dt>Email</dt>
                     <dd>
-                        <t>Optional. Email address responsible for the alert.</t>
+                        <t>Optional. Email address responsible for the incident.</t>
                         <t>E.g. the value of the "Reply-To" or "From" header inside
                             a phishing e-mail.</t>
                     </dd>
@@ -2998,7 +3015,7 @@ Source(0).IP</sourcecode>
                 
                     <dt>Port</dt>
                     <dd>
-                        <t>Optional. Source ports involved in the alert.</t>
+                        <t>Optional. Source ports involved in the incident.</t>
                         <t>Values in this list MUST be integers and MUST be in the range 1-65535.</t>
                     </dd>
                 
@@ -3027,12 +3044,13 @@ Source(0).IP</sourcecode>
       </section>
       <section anchor="class_target">
         <name>The Target Class</name>
-        <t>The Target class describes the target(s) impacted by the event(s) leading up to the alert.</t>
+        <t>The Target class describes the target(s) impacted by the event(s) leading up to the creation of this alert.</t>
         <figure anchor="class_target_diagram">
           <name>The Target class</name>
           <artwork type="ascii-art" align="center">+------------------------+
 |         Target         |
 +------------------------+
+| UUID       ID          |
 | IP         IP          |
 | STRING     Hostname    |
 | STRING     Note        |
@@ -3048,6 +3066,12 @@ Source(0).IP</sourcecode>
         </figure>
         <t>The Target class has the following attributes:</t>
         <dl newline="true">
+                    <dt>ID</dt>
+                    <dd>
+                        <t>Mandatory.
+                            Unique identifier for the target.</t>
+                    </dd>
+                
                     <dt>IP</dt>
                     <dd>
                         <t>Optional. Target IP address.</t>
@@ -3070,23 +3094,23 @@ Source(0).IP</sourcecode>
                 
                     <dt>Service</dt>
                     <dd>
-                        <t>Optional. Service or process impacted by the alert.</t>
+                        <t>Optional. Service or process impacted by the incident.</t>
                     </dd>
                 
                     <dt>User</dt>
                     <dd>
-                        <t>Optional. User ID or login targeted by the alert.</t>
+                        <t>Optional. User ID or login impacted by the incident.</t>
                     </dd>
                 
                     <dt>Email</dt>
                     <dd>
-                        <t>Optional. Email address targeted by the alert.</t>
+                        <t>Optional. Email address impacted by the incident.</t>
                         <t>E.g. the value of the "To" header inside a phishing e-mail.</t>
                     </dd>
                 
                     <dt>Port</dt>
                     <dd>
-                        <t>Optional. Target ports involved in the alert.</t>
+                        <t>Optional. Target ports involved in the incident.</t>
                         <t>Values in this list MUST be integers and MUST be in the range 1-65535.</t>
                     </dd>
                 
@@ -3115,13 +3139,13 @@ Source(0).IP</sourcecode>
       </section>
       <section anchor="class_vector">
         <name>The Vector Class</name>
-        <t>The Vector class describes the vector(s) of the event(s) leading up to the alert.
-                •       Name, location, description, …</t>
+        <t>The Vector class describes the vector(s) of the event(s) leading up to the creation of this alert.</t>
         <figure anchor="class_vector_diagram">
           <name>The Vector class</name>
           <artwork type="ascii-art" align="center">+-------------------------+
 |         Vector          |
 +-------------------------+
+| UUID       ID           |
 | ENUM[]     Category     |
 | STRING     ext-Category |
 | STRING     Name         |
@@ -3136,9 +3160,15 @@ Source(0).IP</sourcecode>
         </figure>
         <t>The Vector class has the following attributes:</t>
         <dl newline="true">
+                    <dt>ID</dt>
+                    <dd>
+                        <t>Mandatory.
+                            Unique identifier for the vector.</t>
+                    </dd>
+                
                     <dt>Category</dt>
                     <dd>
-                        <t>Mandatory. Category for the detected "vector".</t>
+                        <t>Optional. Category for the detected "vector".</t>
                         <table anchor="enum-vector-category"><name>Vector categories</name>
                             
                             <thead>
@@ -3713,7 +3743,7 @@ Source(0).IP</sourcecode>
                     <dt>Ref</dt>
                     <dd>
                         <t>Optional.
-                            References to sources of information related to the alert and/or
+                            References to sources of information related to the incident and/or
                             vulnerability, and specific to this attachment.</t>
                     </dd>
                 
@@ -3814,1821 +3844,6 @@ Source(0).IP</sourcecode>
                 </li>
             </ul>
       </section>
-      <section>
-        <name>Attributes completeness</name>
-        <t>The next table shows when each attributes is required depending on it's Type:
-                physical, cyber or availability.</t>
-        <t>Legend:</t>
-        <ul>
-                <li>
-                    <t>R: REQUIRED</t>
-                </li>
-                <li>
-                    <t>r: Recommanded</t>
-                </li>
-                <li>
-                    <t>o: Optional</t>
-                </li>
-                <li>
-                    <t>NA: Not Applicable</t>
-                </li>
-            </ul>
-        <table><name>Attributes completness - Alert</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Alert</t>
-                            </th>
-                            <th>
-                            </th>
-                            <th>
-                            </th>
-                            <th>
-                            </th>
-                            <th>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>Version</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>ID</t>
-                            </td>
-                            <td>
-                                <t>UUID</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>OrganisationName</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>OrganisationID</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>EntityName</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>EntityID</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Category</t>
-                            </td>
-                            <td>
-                                <t>Array of ENUM</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Cause</t>
-                            </td>
-                            <td>
-                                <t>ENUM</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Description</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Status</t>
-                            </td>
-                            <td>
-                                <t>ENUM</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Priority</t>
-                            </td>
-                            <td>
-                                <t>ENUM</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Confidence</t>
-                            </td>
-                            <td>
-                                <t>Number</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Note</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>CreateTime</t>
-                            </td>
-                            <td>
-                                <t>Timestamp</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>StartTime</t>
-                            </td>
-                            <td>
-                                <t>Timestamp</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>CeaseTime</t>
-                            </td>
-                            <td>
-                                <t>Timestamp</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>DeleteTime</t>
-                            </td>
-                            <td>
-                                <t>Timestamp</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>AltNames</t>
-                            </td>
-                            <td>
-                                <t>Array of String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>AltCategory</t>
-                            </td>
-                            <td>
-                                <t>Array of String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Ref</t>
-                            </td>
-                            <td>
-                                <t>Array of URI</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>CorrelID</t>
-                            </td>
-                            <td>
-                                <t>Array of UUID</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>AggrCondition</t>
-                            </td>
-                            <td>
-                                <t>Array of String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>PredID</t>
-                            </td>
-                            <td>
-                                <t>Array of UUID</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>RelID</t>
-                            </td>
-                            <td>
-                                <t>Array of UUID</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Analyzer</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Analyzer</t>
-                            </th>
-                            <th>
-                                <t>Class</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>IP</t>
-                            </td>
-                            <td>
-                                <t>IPAddress</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Name</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Hostname</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Type</t>
-                            </td>
-                            <td>
-                                <t>ENUM</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Model</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Category</t>
-                            </td>
-                            <td>
-                                <t>Array of ENUM</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Data</t>
-                            </td>
-                            <td>
-                                <t>Array of ENUM</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Method</t>
-                            </td>
-                            <td>
-                                <t>Array of ENUM</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>UnLocation</t>
-                            </td>
-                            <td>
-                                <t>UN/LOCODE</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Location</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Sensor</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Sensor</t>
-                            </th>
-                            <th>
-                                <t>Array of Class</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>IP</t>
-                            </td>
-                            <td>
-                                <t>IPAddress</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Name</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Hostname</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Model</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>UnLocation</t>
-                            </td>
-                            <td>
-                                <t>UN/LOCODE</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Location</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>CaptureZone</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Source</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Source</t>
-                            </th>
-                            <th>
-                                <t>Array of Class</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>UnLocation</t>
-                            </td>
-                            <td>
-                                <t>UN/LOCODE</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Location</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Note</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>TI</t>
-                            </td>
-                            <td>
-                                <t>Array of String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>IP</t>
-                            </td>
-                            <td>
-                                <t>IPAddress</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Hostname</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>User</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Email</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Protocol</t>
-                            </td>
-                            <td>
-                                <t>Array of ProtocolName</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Port</t>
-                            </td>
-                            <td>
-                                <t>Array of Port</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Attachment</t>
-                            </td>
-                            <td>
-                                <t>Array of AttachmentName</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Target</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Target</t>
-                            </th>
-                            <th>
-                                <t>Array of Class</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>UnLocation</t>
-                            </td>
-                            <td>
-                                <t>UN/LOCODE</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Location</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Note</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>IP</t>
-                            </td>
-                            <td>
-                                <t>IPAddress</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Hostname</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Service</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>User</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Email</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Port</t>
-                            </td>
-                            <td>
-                                <t>Array of Port</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Attachment</t>
-                            </td>
-                            <td>
-                                <t>Array of AttachmentName</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Vector</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Vector</t>
-                            </th>
-                            <th>
-                                <t>Array of Class</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>Category</t>
-                            </td>
-                            <td>
-                                <t>Array of ENUM</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>TI</t>
-                            </td>
-                            <td>
-                                <t>Array of String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Name</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Size</t>
-                            </td>
-                            <td>
-                                <t>ENUM</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>UnLocation</t>
-                            </td>
-                            <td>
-                                <t>UN/LOCODE</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>GeoLocation</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>GeoRadius</t>
-                            </td>
-                            <td>
-                                <t>Number</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Location</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Note</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                            <td>
-                                <t>NA</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Attachment</t>
-                            </td>
-                            <td>
-                                <t>Array of AttachmentName</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness - Attachment</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Attachment</t>
-                            </th>
-                            <th>
-                                <t>Array of Class</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                            <th>
-                                <t>o</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>Name</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>FileName</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Hash</t>
-                            </td>
-                            <td>
-                                <t>Array of Hashes</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Size</t>
-                            </td>
-                            <td>
-                                <t>Number</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Ref</t>
-                            </td>
-                            <td>
-                                <t>Array of URI</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>ExternalURI</t>
-                            </td>
-                            <td>
-                                <t>Array of URI</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Note</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>ContentType</t>
-                            </td>
-                            <td>
-                                <t>MediaType</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>ContentEncoding</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Content</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                            <td>
-                                <t>o</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-        <table><name>Attributes completness</name>
-                
-                <thead>
-                        <tr>
-                            <th>
-                                <t>Attributes</t>
-                            </th>
-                            <th>
-                                <t>Type</t>
-                            </th>
-                            <th>
-                                <t>Phy</t>
-                            </th>
-                            <th>
-                                <t>Cyb</t>
-                            </th>
-                            <th>
-                                <t>Avail</t>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <t>Name</t>
-                            </th>
-                            <th>
-                                <t>String</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                            <th>
-                                <t>R</t>
-                            </th>
-                        </tr>
-                    </thead><tbody>
-                        <tr>
-                            <td>
-                                <t>Reference</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                            <td>
-                                <t>r</t>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t>Content</t>
-                            </td>
-                            <td>
-                                <t>String</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                            <td>
-                                <t>R</t>
-                            </td>
-                        </tr>
-                    </tbody>
-            </table>
-      </section>
     </section>
     <section>
       <name>Security Considerations</name>
@@ -5655,7 +3870,7 @@ Source(0).IP</sourcecode>
                 <t>Name of the registry group: "Incident Detection Message Exchange Format v2 (IDMEF)"</t>
             </li>
             <li>
-                <t>URL of the registry: &lt;http://www.iana.org/assignments/idmefv2&gt;</t>
+                <t>URL of the registry: http://www.iana.org/assignments/idmefv2</t>
             </li>
             <li>
                 <t>Namespace format: A registry entry consists of:</t>
@@ -6357,12 +4572,12 @@ Source(0).IP</sourcecode>
             messages prior to processing. Please note that extraneous linebreaks have been
             included due to formatting constraints.</t>
       <sourcecode type="none">{
-    "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V04)",
+    "description": "JSON schema for the Intrusion Detection Message Exchange Format (IDMEF) version 2 (revision 2.D.V0X)",
     "properties": {
         "Version": {
             "description": "The version of the IDMEF format in use by this alert. During the drafts tuning period the version is equal to the draft version. Therefore it is \"2.D.V0X\" for Draft V0X.",
             "enum": [
-                "2.D.V04"
+                "2.D.V0X"
             ]
         },
         "ID": {
@@ -6487,6 +4702,10 @@ Source(0).IP</sourcecode>
             "items": {
                 "description": "The Analyzer class describes the module that has analyzed the data captured by the sensors, identified an event of interest and decided to create an alert.",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the analyzer.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "Analyzer IP address.",
                         "$ref": "#/definitions/ipType"
@@ -6559,7 +4778,6 @@ Source(0).IP</sourcecode>
                 "additionalProperties": false,
                 "type": "object",
                 "required": [
-                    "IP",
                     "Name"
                 ]
             }
@@ -6569,6 +4787,10 @@ Source(0).IP</sourcecode>
             "items": {
                 "description": "The Sensor class describes the module that captured the data before sending it to an analyzer. The Sensor may be a subpart of the Analyzer.",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the sensor.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "The sensor's IP address.",
                         "$ref": "#/definitions/ipType"
@@ -6605,7 +4827,6 @@ Source(0).IP</sourcecode>
                 "additionalProperties": false,
                 "type": "object",
                 "required": [
-                    "IP",
                     "Name"
                 ]
             }
@@ -6615,6 +4836,10 @@ Source(0).IP</sourcecode>
             "items": {
                 "description": "The Source class describes the origin(s) of the event(s) leading up to the alert.",
                 "properties": {
+                    "ID": {
+                        "description": "Unique identifier for the Source.",
+                        "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "Source IP address.",
                         "$ref": "#/definitions/ipType"
@@ -6686,6 +4911,10 @@ Source(0).IP</sourcecode>
             "items": {
                 "description": "The Target class describes the target(s) impacted by the event(s) leading up to the alert.",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the target.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "IP": {
                         "description": "Target IP address.",
                         "$ref": "#/definitions/ipType"
@@ -6747,6 +4976,10 @@ Source(0).IP</sourcecode>
             "items": {
                 "description": "The Vector class describes the vector(s) of the event(s) leading up to the alert. \u2022 Name, location, description, \u2026",
                 "properties": {
+                    "ID": {
+                      "description": "Unique identifier for the GPS.",
+                      "$ref": "#/definitions/uuidType"
+                    },
                     "Category": {
                         "description": "Category for the detected \"vector\".",
                         "type": "array",
@@ -6798,10 +5031,7 @@ Source(0).IP</sourcecode>
                     }
                 },
                 "additionalProperties": false,
-                "type": "object",
-                "required": [
-                    "Category"
-                ]
+                "type": "object"
             }
         },
         "Attachment": {
@@ -7182,8 +5412,8 @@ Source(0).IP</sourcecode>
             "pattern": "^[a-zA-Z0-9-]+:([a-fA-F0-9]{2})+$"
         }
     },
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "IDMEF 2.D.V04"
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "title": "IDMEF 2.D.V0X"
 }</sourcecode>
     </section>
   </back>
