@@ -56,7 +56,9 @@
         },
         "Confidence": {
             "description": "A floating-point value between 0 and 1 indicating the analyzer's confidence in its own reliability of this particular detection, where 0 means that the detection is surely incorrect while 1 means there is no doubt about the detection made.",
-            "type": "number"
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
         },
         "Note": {
             "description": "Free text human-readable additional note, possibly a longer description of the incident if is not already obvious. The Note attribute can be used to store any additional information. It can be additional information about the event and/or about the incident resolution, although the incident resolution information should in principle be stored elsewhere (with a link with the external tool in AltNames)",
